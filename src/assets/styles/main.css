@@ -9,9 +9,20 @@
 	--color-muted: #735f6d;
 	--color-accent: #5f3c8d;
 	--color-success: #1f8a70;
-	--color-hover: #E86BA6;
+	--color-hover: #e86ba6;
+	--color-board-bg: #f4eff3;
+	--color-card-bg: #ffffff;
+	--color-column-bg: #f9f5f8;
+	--color-border: #e8dde5;
+	--color-border-light: #f0e8ed;
+	--color-danger: #dc3545;
+	--color-warning: #f59e0b;
+	--color-info: #3b82f6;
+
+	--shadow-card: 0 1px 3px rgb(43 27 39 / 0.04), 0 1px 2px rgb(43 27 39 / 0.06);
+	--shadow-card-hover: 0 4px 12px rgb(43 27 39 / 0.08), 0 2px 4px rgb(43 27 39 / 0.04);
+	--shadow-modal: 0 20px 60px rgb(43 27 39 / 0.15), 0 8px 20px rgb(43 27 39 / 0.1);
 	--shadow-soft: 0 18px 50px rgb(112 51 88 / 0.12);
-	--shadow-lifted: 0 25px 65px rgb(112 51 88 / 0.18);
 }
 
 @layer base {
@@ -29,8 +40,8 @@
 	}
 
 	*::-webkit-scrollbar {
-		width: 6px;
-		height: 6px;
+		width: 5px;
+		height: 5px;
 	}
 
 	*::-webkit-scrollbar-track {
@@ -70,6 +81,11 @@
 	a {
 		@apply transition duration-400 cursor-pointer;
 	}
+
+	input,
+	textarea {
+		@apply transition duration-400;
+	}
 }
 
 @layer utilities {
@@ -77,7 +93,39 @@
 		@apply w-full max-w-500 mx-auto;
 	}
 
-	.text-gray {
-		@apply text-black/55;
+	.btn {
+		@apply inline-flex items-center justify-center gap-2 font-semibold transition duration-200 focus-visible:ring-2 focus-visible:ring-offset-2;
+	}
+
+	.btn-primary {
+		@apply bg-primary text-white shadow-sm shadow-primary/20 hover:bg-hover hover:shadow-primary/30 focus-visible:ring-primary;
+	}
+
+	.btn-secondary {
+		@apply border border-border bg-card-bg text-ink hover:bg-column-bg focus-visible:ring-primary;
+	}
+
+	.btn-danger {
+		@apply bg-danger text-white hover:bg-danger/90 focus-visible:ring-red-400;
+	}
+
+	.btn-ghost {
+		@apply text-muted hover:bg-column-bg hover:text-ink focus-visible:ring-primary;
+	}
+
+	.btn-sm {
+		@apply px-4 py-2.5 text-sm;
+	}
+
+	.btn-md {
+		@apply px-4 py-2.5 text-sm;
+	}
+
+	.btn-lg {
+		@apply px-6 py-3.5 text-base;
+	}
+
+	.btn-rounded-xl {
+		@apply rounded-xl;
 	}
 }

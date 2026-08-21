@@ -21,7 +21,7 @@ import { ArrowRight, Check, Circle, Flame, ListChecks, Sparkles, TrendingUp } fr
 				<a class="hover:text-primary" href="#start">Get started</a>
 			</div>
 
-			<RouterLink to="/dashboard" class="rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:-translate-y-0.5 hover:bg-hover focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">Open workspace</RouterLink>
+			<RouterLink to="/dashboard" class="btn btn-primary btn-sm rounded-xl">Open workspace</RouterLink>
 		</nav>
 	</header>
 
@@ -45,12 +45,12 @@ import { ArrowRight, Check, Circle, Flame, ListChecks, Sparkles, TrendingUp } fr
 					<p class="mt-7 max-w-lg text-lg leading-8 text-muted">A beautifully simple place to capture the work that matters, keep momentum visible, and finish each day feeling lighter.</p>
 
 					<div class="mt-8 flex flex-col gap-3 sm:flex-row">
-						<RouterLink to="/dashboard" class="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-semibold text-white hover:bg-hover focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
-							Start for free&nbsp;
+						<RouterLink to="/dashboard" class="btn btn-primary btn-lg rounded-xl">
+							Start for free
 							<ArrowRight :size="18" aria-hidden="true" />
 						</RouterLink>
 
-						<a href="#how-it-works" class="inline-flex items-center justify-center rounded-xl border border-primary/15 bg-surface/70 px-6 py-3.5 font-semibold text-ink hover:border-primary/40 hover:bg-surface focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">See how it works</a>
+						<a href="#how-it-works" class="btn btn-secondary btn-lg rounded-xl">See how it works</a>
 					</div>
 
 					<p class="mt-5 flex items-center gap-2 text-sm text-muted">
@@ -137,21 +137,25 @@ import { ArrowRight, Check, Circle, Flame, ListChecks, Sparkles, TrendingUp } fr
 			<div class="container grid grid-cols-2 gap-6 px-5 text-center sm:grid-cols-4 sm:px-8 lg:px-12">
 				<div>
 					<p class="text-2xl font-bold tracking-tight text-primary">3</p>
+
 					<p class="mt-1 text-sm text-muted">clear task stages</p>
 				</div>
 
 				<div>
 					<p class="text-2xl font-bold tracking-tight text-primary">3</p>
+
 					<p class="mt-1 text-sm text-muted">priority levels</p>
 				</div>
 
 				<div>
 					<p class="text-2xl font-bold tracking-tight text-primary">1</p>
+
 					<p class="mt-1 text-sm text-muted">focused workspace</p>
 				</div>
 
 				<div>
 					<p class="text-2xl font-bold tracking-tight text-primary">0</p>
+
 					<p class="mt-1 text-sm text-muted">sign-ups required</p>
 				</div>
 			</div>
@@ -212,8 +216,8 @@ import { ArrowRight, Check, Circle, Flame, ListChecks, Sparkles, TrendingUp } fr
 
 					<p class="mt-6 max-w-md text-lg leading-8 text-white/65">MiniTask helps you shape a quieter workday in three unhurried moves.</p>
 
-					<RouterLink to="/dashboard" class="mt-8 inline-flex rounded-xl bg-primary px-5 py-3 font-semibold text-background hover:bg-primary/90">
-						Create your first task&nbsp;
+					<RouterLink to="/dashboard" class="btn btn-primary btn-lg rounded-xl mt-8">
+						Create your first task
 						<ArrowRight :size="18" aria-hidden="true" />
 					</RouterLink>
 				</div>
@@ -269,8 +273,8 @@ import { ArrowRight, Check, Circle, Flame, ListChecks, Sparkles, TrendingUp } fr
 					</div>
 
 					<div class="mt-8 flex flex-col items-center gap-3">
-						<RouterLink to="/dashboard" class="inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3.5 font-semibold text-white shadow-lg shadow-primary/20 hover:-translate-y-0.5 hover:bg-hover">
-							Open your workspace&nbsp;
+						<RouterLink to="/dashboard" class="btn btn-primary btn-lg rounded-xl">
+							Open your workspace
 							<ArrowRight :size="18" aria-hidden="true" />
 						</RouterLink>
 
