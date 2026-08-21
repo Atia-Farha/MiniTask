@@ -5,12 +5,12 @@ A simple responsive task-management frontend where a user can add tasks, organiz
 ## Tech Stack
 
 - [Vue.js 3](https://vuejs.org/)
-- [Vue Router](https://router.vuejs.org/)
-- [Pinia](https://pinia.vuejs.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Vite](https://vitejs.dev/)
-- [ESLint](https://eslint.org/)
-- [Prettier](https://prettier.io/)
+- [Vue Router 5](https://router.vuejs.org/)
+- [Pinia 4](https://pinia.vuejs.org/)
+- [Tailwind CSS 4](https://tailwindcss.com/)
+- [Vite 8](https://vitejs.dev/)
+- [ESLint 10](https://eslint.org/)
+- [Prettier 3](https://prettier.io/)
 - [pnpm](https://pnpm.js.org/)
 
 ## Project Setup for Local Development

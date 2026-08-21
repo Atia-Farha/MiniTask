@@ -8,15 +8,9 @@ importers:
 
   .:
     dependencies:
-      '@tailwindcss/vite':
-        specifier: ^4.3.3
-        version: 4.3.3(vite@8.2.1(jiti@2.7.0)(yaml@2.9.0))
       pinia:
         specifier: ^4.0.2
         version: 4.0.3(@vue/devtools-api@8.2.1)(vue@3.5.41)
-      tailwindcss:
-        specifier: ^4.3.3
-        version: 4.3.3
       vue:
         specifier: ^3.5.40
         version: 3.5.41
@@ -27,6 +21,9 @@ importers:
       '@eslint/js':
         specifier: ^10.0.1
         version: 10.0.1(eslint@10.8.1(jiti@2.7.0))
+      '@tailwindcss/vite':
+        specifier: ^4.3.3
+        version: 4.3.3(vite@8.2.1(jiti@2.7.0)(yaml@2.9.0))
       '@vitejs/plugin-vue':
         specifier: ^6.0.8
         version: 6.0.8(vite@8.2.1(jiti@2.7.0)(yaml@2.9.0))(vue@3.5.41)
@@ -54,6 +51,9 @@ importers:
       prettier:
         specifier: 3.9.5
         version: 3.9.5
+      tailwindcss:
+        specifier: ^4.3.3
+        version: 4.3.3
       vite:
         specifier: ^8.1.5
         version: 8.2.1(jiti@2.7.0)(yaml@2.9.0)

@@ -21,6 +21,7 @@ coverage
 *.suo
 *.ntvs*
 *.njsproj
+AGENTS.md
 *.sln
 *.sw?
 
