@@ -79,12 +79,12 @@
 
 	button,
 	a {
-		@apply transition duration-400 cursor-pointer;
+		@apply transition duration-500 cursor-pointer;
 	}
 
 	input,
 	textarea {
-		@apply transition duration-400;
+		@apply transition duration-500;
 	}
 }
 
@@ -94,7 +94,7 @@
 	}
 
 	.btn {
-		@apply inline-flex items-center justify-center gap-2 font-semibold transition duration-200 focus-visible:ring-2 focus-visible:ring-offset-2;
+		@apply inline-flex items-center justify-center gap-2 font-semibold transition duration-500 focus-visible:ring-2 focus-visible:ring-offset-2;
 	}
 
 	.btn-primary {
@@ -109,12 +109,8 @@
 		@apply bg-danger text-white hover:bg-danger/90 focus-visible:ring-red-400;
 	}
 
-	.btn-ghost {
-		@apply text-muted hover:bg-column-bg hover:text-ink focus-visible:ring-primary;
-	}
-
 	.btn-sm {
-		@apply px-4 py-2.5 text-sm;
+		@apply px-3 py-2 text-xs;
 	}
 
 	.btn-md {

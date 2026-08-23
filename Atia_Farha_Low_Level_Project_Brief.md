@@ -1,119 +1,114 @@
-# **TECHARENAX** 
+# **TECHARENAX**
 
-Frontend Internship — Project Brief 
+Frontend Internship — Project Brief
 
-|**Candidate**|Atia Farha|
-|---|---|
-|**Track**|Frontend Development|
-|**Level**|Low-Mid / Comfortable 10-Day Project|
-|**Stack**|Vue 3 + Tailwind CSS + Pinia|
-|**Period**|20 August – 30 August 2026|
+| **Candidate** | Atia Farha                           |
+| ------------- | ------------------------------------ |
+| **Track**     | Frontend Development                 |
+| **Level**     | Low-Mid / Comfortable 10-Day Project |
+| **Stack**     | Vue 3 + Tailwind CSS + Pinia         |
+| **Period**    | 20 August – 30 August 2026           |
 
+## **1. Project Title**
 
+### **MiniTask — Simple Personal Task Manager**
 
-## **1. Project Title** 
+## **2. Objective**
 
-### **MiniTask — Simple Personal Task Manager** 
+Build a simple responsive task-management frontend where a user can add tasks, organize them by status and track basic progress. The project should be small enough to finish comfortably within 10 days while practicing Vue components, Pinia and responsive UI.
 
-## **2. Objective** 
+## **3. Main Features**
 
-Build a simple responsive task-management frontend where a user can add tasks, organize them by status and track basic progress. The project should be small enough to finish comfortably within 10 days while practicing Vue components, Pinia and responsive UI. 
+- Add a new task with title, description and priority.
 
-## **3. Main Features** 
+- Show tasks in three sections: **To Do, In Progress, Done** .
 
-- Add a new task with title, description and priority. 
+- Edit and delete tasks.
 
-- Show tasks in three sections: **To Do, In Progress, Done** . 
+- Change task status.
 
-- Edit and delete tasks. 
+- Priority: Low, Medium, High.
 
-- Change task status. 
+- Search tasks by title.
 
-- Priority: Low, Medium, High. 
+- Simple filter by priority.
 
-- Search tasks by title. 
+- Show total, completed and pending task counts.
 
-- Simple filter by priority. 
+- Responsive design for mobile and desktop.
 
-- Show total, completed and pending task counts. 
+## **4. Technical Requirements**
 
-- Responsive design for mobile and desktop. 
+- Use **Vue 3** and reusable components.
 
-## **4. Technical Requirements** 
+- Use **Tailwind CSS** for styling.
 
-- Use **Vue 3** and reusable components. 
+- Use **Pinia** for task state management.
 
-- Use **Tailwind CSS** for styling. 
+- Use local/mock data; no backend is required.
 
-- Use **Pinia** for task state management. 
+- Use localStorage so tasks remain after refresh.
 
-- Use local/mock data; no backend is required. 
+- Keep components, store and data files organized.
 
-- Use localStorage so tasks remain after refresh. 
+## **5. Suggested Components**
 
-- Keep components, store and data files organized. 
+- TaskForm
 
-## **5. Suggested Components** 
+- TaskCard
 
-- TaskForm 
+- TaskList
 
-- TaskCard 
+- TaskFilter
 
-- TaskList 
+- ProgressSummary
 
-- TaskFilter 
+- EmptyState
 
-- ProgressSummary 
+## **6. Small Extra Requirement**
 
-- EmptyState 
+Show a small progress bar based on completed tasks. Example: 6 completed out of 10 tasks = 60% progress.
 
-## **6. Small Extra Requirement** 
+## **7. GitHub Requirement — Mandatory**
 
-Show a small progress bar based on completed tasks. Example: 6 completed out of 10 tasks = 60% progress. 
+**A proper GitHub repository must be used.** The candidate should make meaningful commits and push progress regularly. During the interview, the interviewer may check the **commit history and push activity** .
 
-## **7. GitHub Requirement — Mandatory** 
+- Do not submit everything in one final commit.
 
-**A proper GitHub repository must be used.** The candidate should make meaningful commits and push progress regularly. During the interview, the interviewer may check the **commit history and push activity** . 
+- Use meaningful commit messages.
 
-- Do not submit everything in one final commit. 
+- Include a short README.md.
 
-- Use meaningful commit messages. 
+- Keep the repository clean and organized.
 
-- Include a short README.md. 
+## **8. Suggested 10-Day Plan**
 
-- Keep the repository clean and organized. 
+| **Days 1–2** | Setup, layout, components and task data.          |
+| ------------ | ------------------------------------------------- |
+| **Days 3–4** | Add/edit/delete tasks and status changes.         |
+| **Days 5–6** | Pinia store, search and priority filter.          |
+| **Days 7–8** | localStorage, progress summary and responsive UI. |
+| **Day 9**    | Bug fixing and UI polishing.                      |
+| **Day 10**   | README, final testing and GitHub cleanup.         |
 
-## **8. Suggested 10-Day Plan** 
+## **9. Final Deliverables**
 
-|**Days 1–2**|Setup, layout, components and task data.|
-|---|---|
-|**Days 3–4**|Add/edit/delete tasks and status changes.|
-|**Days 5–6**|Pinia store, search and priority filter.|
-|**Days 7–8**|localStorage, progress summary and responsive UI.|
-|**Day 9**|Bug fixing and UI polishing.|
-|**Day 10**|README, final testing and GitHub cleanup.|
+- Working responsive task-management frontend.
 
+- Vue 3 + Tailwind CSS + Pinia implementation.
 
+- Search and priority filter.
 
-## **9. Final Deliverables** 
+- localStorage persistence.
 
-- Working responsive task-management frontend. 
+- Progress summary.
 
-- Vue 3 + Tailwind CSS + Pinia implementation. 
+- GitHub repository with regular commits and pushes.
 
-- Search and priority filter. 
+- README.md.
 
-- localStorage persistence. 
+## **10. Important Note**
 
-- Progress summary. 
+AI tools may be used for assistance, but the candidate must understand and explain the submitted code. The project should remain original and must not match another intern's assignment.
 
-- GitHub repository with regular commits and pushes. 
-
-- README.md. 
-
-## **10. Important Note** 
-
-AI tools may be used for assistance, but the candidate must understand and explain the submitted code. The project should remain original and must not match another intern's assignment. 
-
-**TechArenaX — Compete. Learn. Innovate.** 
-
+**TechArenaX — Compete. Learn. Innovate.**
