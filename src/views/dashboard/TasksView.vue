@@ -5,56 +5,56 @@ import TaskFilter from '@/components/tasks/TaskFilter.vue';
 import TaskForm from '@/components/tasks/TaskForm.vue';
 import TaskList from '@/components/tasks/TaskList.vue';
 
-const taskStore = useTaskStore();
-const taskBeingEdited = ref(null);
+const store = useTaskStore();
+const editingTask = ref(null);
 
-function handleTaskSubmit({ title, description, priority }) {
-	if (taskBeingEdited.value) {
-		const { error } = taskStore.updateTask(taskBeingEdited.value.id, { title, description, priority });
+function onSubmit({ title, description, priority }) {
+	if (editingTask.value) {
+		const { error } = store.updateTask(editingTask.value.id, { title, description, priority });
 
 		if (!error) {
-			taskBeingEdited.value = null;
-			taskStore.isTaskFormVisible = false;
+			editingTask.value = null;
+			store.showForm = false;
 		}
 	} else {
-		const { error } = taskStore.addTask({ title, description, priority });
+		const { error } = store.addTask({ title, description, priority });
 
-		if (!error) taskStore.isTaskFormVisible = false;
+		if (!error) store.showForm = false;
 	}
 }
 
-function handleEditTask(task) {
-	taskBeingEdited.value = task;
-	taskStore.isTaskFormVisible = true;
+function onEdit(task) {
+	editingTask.value = task;
+	store.showForm = true;
 }
 
-function handleCancelForm() {
-	taskBeingEdited.value = null;
-	taskStore.isTaskFormVisible = false;
+function onCancel() {
+	editingTask.value = null;
+	store.showForm = false;
 }
 </script>
 
 <template>
 	<div class="space-y-5">
 		<!-- Filter -->
-		<TaskFilter :search-query="taskStore.searchQuery" :selected-priority="taskStore.selectedPriority" @update:search="taskStore.updateSearchQuery" @update:priority="taskStore.updatePriorityFilter" />
+		<TaskFilter :search-query="store.searchQuery" :selected-priority="store.selectedPriority" @update:search="store.setSearch" @update:priority="store.setPriority" />
 
 		<!-- Kanban Board -->
 		<div class="grid gap-4 md:grid-cols-3">
 			<div class="rounded-2xl border border-border bg-column-bg/50 p-3">
-				<TaskList :tasks="taskStore.todoTasks" title="To Do" accent-color="bg-muted/40" empty-message="No to-do tasks" empty-submessage="Click + New Task to add one" @edit="handleEditTask" @delete="taskStore.removeTask" @status-change="taskStore.changeTaskStatus" />
+				<TaskList :tasks="store.todoTasks" title="To Do" accent-color="bg-muted/40" empty-message="No to-do tasks" empty-sub="Click + New Task to add one" @edit="onEdit" @delete="store.removeTask" @status-change="store.changeStatus" />
 			</div>
 
 			<div class="rounded-2xl border border-border bg-column-bg/50 p-3">
-				<TaskList :tasks="taskStore.inProgressTasks" title="In Progress" accent-color="bg-primary" empty-message="No tasks in progress" empty-submessage="Move a task forward when you start" @edit="handleEditTask" @delete="taskStore.removeTask" @status-change="taskStore.changeTaskStatus" />
+				<TaskList :tasks="store.inProgressTasks" title="In Progress" accent-color="bg-primary" empty-message="No tasks in progress" empty-sub="Move a task forward when you start" @edit="onEdit" @delete="store.removeTask" @status-change="store.changeStatus" />
 			</div>
 
 			<div class="rounded-2xl border border-border bg-column-bg/50 p-3">
-				<TaskList :tasks="taskStore.completedTasks" title="Done" accent-color="bg-success" empty-message="No completed tasks" empty-submessage="Finish a task to see it here" @edit="handleEditTask" @delete="taskStore.removeTask" @status-change="taskStore.changeTaskStatus" />
+				<TaskList :tasks="store.doneTasks" title="Done" accent-color="bg-success" empty-message="No completed tasks" empty-sub="Finish a task to see it here" @edit="onEdit" @delete="store.removeTask" @status-change="store.changeStatus" />
 			</div>
 		</div>
 
 		<!-- Task Form Modal -->
-		<TaskForm v-if="taskStore.isTaskFormVisible || taskBeingEdited" :task-to-edit="taskBeingEdited" @submit="handleTaskSubmit" @cancel="handleCancelForm" />
+		<TaskForm v-if="store.showForm || editingTask" :edit-task="editingTask" @submit="onSubmit" @cancel="onCancel" />
 	</div>
 </template>

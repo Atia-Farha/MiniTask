@@ -9,12 +9,12 @@ defineProps({
 
 const emit = defineEmits(['confirm', 'cancel']);
 
-function handleEscapeKey(event) {
+function onEscape(event) {
 	if (event.key === 'Escape') emit('cancel');
 }
 
-onMounted(() => document.addEventListener('keydown', handleEscapeKey));
-onUnmounted(() => document.removeEventListener('keydown', handleEscapeKey));
+onMounted(() => document.addEventListener('keydown', onEscape));
+onUnmounted(() => document.removeEventListener('keydown', onEscape));
 </script>
 
 <template>

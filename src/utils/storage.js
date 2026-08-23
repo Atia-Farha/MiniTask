@@ -1,19 +1,19 @@
-const TASKS_STORAGE_KEY = 'minitask.tasks';
+const STORAGE_KEY = 'minitask.tasks';
 
-export function loadTasksFromStorage() {
+export function loadTasks() {
 	try {
-		const rawJsonString = localStorage.getItem(TASKS_STORAGE_KEY);
-		const parsedTasks = rawJsonString ? JSON.parse(rawJsonString) : [];
+		const raw = localStorage.getItem(STORAGE_KEY);
+		const parsed = raw ? JSON.parse(raw) : [];
 
-		return Array.isArray(parsedTasks) ? parsedTasks.filter((task) => task?.id && task?.title?.trim()) : [];
+		return Array.isArray(parsed) ? parsed.filter((task) => task?.id && task?.title?.trim()) : [];
 	} catch {
 		return [];
 	}
 }
 
-export function saveTasksToStorage(tasks) {
+export function saveTasks(tasks) {
 	try {
-		localStorage.setItem(TASKS_STORAGE_KEY, JSON.stringify(tasks));
+		localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
 	} catch {
 		alert('Failed to save tasks. Please try again later.');
 	}

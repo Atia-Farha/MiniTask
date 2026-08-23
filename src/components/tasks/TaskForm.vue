@@ -3,91 +3,91 @@ import { ref, watch, onMounted, onUnmounted } from 'vue';
 import { X } from '@lucide/vue';
 
 const props = defineProps({
-	taskToEdit: { type: Object, default: null },
+	editTask: { type: Object, default: null },
 });
 
 const emit = defineEmits(['submit', 'cancel']);
 
-const taskTitle = ref('');
-const taskDescription = ref('');
-const taskPriority = ref('medium');
-const errorMessage = ref('');
+const title = ref('');
+const desc = ref('');
+const priority = ref('medium');
+const error = ref('');
 
 watch(
-	() => props.taskToEdit,
+	() => props.editTask,
 	(task) => {
 		if (task) {
-			taskTitle.value = task.title;
-			taskDescription.value = task.description;
-			taskPriority.value = task.priority;
-			errorMessage.value = '';
+			title.value = task.title;
+			desc.value = task.description;
+			priority.value = task.priority;
+			error.value = '';
 		}
 	},
 	{ immediate: true },
 );
 
-function handleSubmit() {
-	errorMessage.value = '';
-	if (!taskTitle.value.trim()) {
-		errorMessage.value = 'Title is required.';
+function submit() {
+	error.value = '';
+	if (!title.value.trim()) {
+		error.value = 'Title is required.';
 		return;
 	}
 	emit('submit', {
-		title: taskTitle.value.trim(),
-		description: taskDescription.value.trim(),
-		priority: taskPriority.value,
+		title: title.value.trim(),
+		description: desc.value.trim(),
+		priority: priority.value,
 	});
-	if (!props.taskToEdit) {
-		taskTitle.value = '';
-		taskDescription.value = '';
-		taskPriority.value = 'medium';
+	if (!props.editTask) {
+		title.value = '';
+		desc.value = '';
+		priority.value = 'medium';
 	}
 }
 
-function handleCancel() {
-	errorMessage.value = '';
+function cancel() {
+	error.value = '';
 	emit('cancel');
 }
 
-function handleEscapeKey(event) {
-	if (event.key === 'Escape') handleCancel();
+function onEscape(event) {
+	if (event.key === 'Escape') cancel();
 }
 
-onMounted(() => document.addEventListener('keydown', handleEscapeKey));
-onUnmounted(() => document.removeEventListener('keydown', handleEscapeKey));
+onMounted(() => document.addEventListener('keydown', onEscape));
+onUnmounted(() => document.removeEventListener('keydown', onEscape));
 </script>
 
 <template>
-	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm" @click.self="handleCancel">
+	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm" @click.self="cancel">
 		<div class="w-full max-w-md overflow-hidden rounded-2xl border border-border bg-card-bg shadow-modal">
 			<div class="flex items-center justify-between px-6 pt-5 pb-0">
-				<h2 class="text-md font-bold text-primary">{{ taskToEdit ? 'Edit Task' : 'New Task' }}</h2>
+				<h2 class="text-md font-bold text-primary">{{ editTask ? 'Edit Task' : 'New Task' }}</h2>
 
-				<button class="grid size-7 place-items-center rounded-lg text-muted transition hover:bg-column-bg hover:text-ink" aria-label="Close" @click="handleCancel">
+				<button class="grid size-7 place-items-center rounded-lg text-muted transition hover:bg-column-bg hover:text-ink" aria-label="Close" @click="cancel">
 					<X :size="16" />
 				</button>
 			</div>
 
-			<form class="px-6 pt-5 pb-6" @submit.prevent="handleSubmit">
+			<form class="px-6 pt-5 pb-6" @submit.prevent="submit">
 				<div class="space-y-4">
 					<div>
 						<div class="mb-1.5 flex items-baseline justify-between">
 							<label for="task-title" class="text-xs font-semibold uppercase tracking-wider text-muted">Title</label>
 
-							<span class="text-[11px] tabular-nums text-muted/50">{{ taskTitle.length }}/120</span>
+							<span class="text-[11px] tabular-nums text-muted/50">{{ title.length }}/120</span>
 						</div>
 
-						<input id="task-title" v-model="taskTitle" type="text" placeholder="e.g. Design landing page" maxlength="120" class="w-full rounded-xl border border-border bg-column-bg px-3.5 py-2.5 text-sm text-ink placeholder-muted/30 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10" autofocus />
+						<input id="task-title" v-model="title" type="text" placeholder="e.g. Design landing page" maxlength="120" class="w-full rounded-xl border border-border bg-column-bg px-3.5 py-2.5 text-sm text-ink placeholder-muted/30 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10" autofocus />
 					</div>
 
 					<div>
 						<div class="mb-1.5 flex items-baseline justify-between">
 							<label for="task-desc" class="text-xs font-semibold uppercase tracking-wider text-muted">Description</label>
 
-							<span class="text-[11px] tabular-nums text-muted/50">{{ taskDescription.length }}/1000</span>
+							<span class="text-[11px] tabular-nums text-muted/50">{{ desc.length }}/1000</span>
 						</div>
 
-						<textarea id="task-desc" v-model="taskDescription" rows="3" maxlength="1000" placeholder="Optional details about this task..." class="w-full resize-none rounded-xl border border-border bg-column-bg px-3.5 py-2.5 text-sm text-ink placeholder-muted/30 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10"></textarea>
+						<textarea id="task-desc" v-model="desc" rows="3" maxlength="1000" placeholder="Optional details about this task..." class="w-full resize-none rounded-xl border border-border bg-column-bg px-3.5 py-2.5 text-sm text-ink placeholder-muted/30 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10"></textarea>
 					</div>
 
 					<div>
@@ -95,33 +95,33 @@ onUnmounted(() => document.removeEventListener('keydown', handleEscapeKey));
 
 						<div class="flex gap-1.5 rounded-xl bg-column-bg p-1">
 							<button
-								v-for="priorityOption in [
+								v-for="opt in [
 									{ value: 'low', label: 'Low', dot: 'bg-success' },
 									{ value: 'medium', label: 'Medium', dot: 'bg-warning' },
 									{ value: 'high', label: 'High', dot: 'bg-danger' },
 								]"
-								:key="priorityOption.value"
+								:key="opt.value"
 								type="button"
 								class="flex flex-1 items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium transition"
-								:class="taskPriority === priorityOption.value ? 'bg-card-bg text-ink shadow-sm' : 'text-muted hover:text-ink'"
-								@click="taskPriority = priorityOption.value">
-								<span class="size-1.5 rounded-full" :class="priorityOption.dot"></span>
-								{{ priorityOption.label }}
+								:class="priority === opt.value ? 'bg-card-bg text-ink shadow-sm' : 'text-muted hover:text-ink'"
+								@click="priority = opt.value">
+								<span class="size-1.5 rounded-full" :class="opt.dot"></span>
+								{{ opt.label }}
 							</button>
 						</div>
 					</div>
 				</div>
 
-				<p v-if="errorMessage" class="mt-3 flex items-center gap-1.5 rounded-lg bg-danger/5 px-3 py-2 text-xs text-danger" role="alert">
+				<p v-if="error" class="mt-3 flex items-center gap-1.5 rounded-lg bg-danger/5 px-3 py-2 text-xs text-danger" role="alert">
 					<span class="size-1 shrink-0 rounded-full bg-danger"></span>
-					{{ errorMessage }}
+					{{ error }}
 				</p>
 
 				<div class="mt-5 flex gap-2">
-					<button type="button" class="btn btn-secondary btn-md flex-1 rounded-xl" @click="handleCancel">Cancel</button>
+					<button type="button" class="btn btn-secondary btn-md flex-1 rounded-xl" @click="cancel">Cancel</button>
 
 					<button type="submit" class="btn btn-primary btn-md flex-1 rounded-xl">
-						{{ taskToEdit ? 'Save Changes' : 'Create Task' }}
+						{{ editTask ? 'Save Changes' : 'Create Task' }}
 					</button>
 				</div>
 			</form>

@@ -19,7 +19,7 @@ defineProps({
 		type: String,
 		default: 'No tasks here.',
 	},
-	emptySubmessage: {
+	emptySub: {
 		type: String,
 		default: '',
 	},
@@ -47,6 +47,6 @@ const emit = defineEmits(['edit', 'delete', 'status-change']);
 		</div>
 
 		<!-- Empty state -->
-		<EmptyState v-else :message="emptyMessage" :submessage="emptySubmessage" />
+		<EmptyState v-else :message="emptyMessage" :submessage="emptySub" />
 	</section>
 </template>

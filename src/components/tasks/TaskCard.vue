@@ -9,7 +9,7 @@ const props = defineProps({
 
 const emit = defineEmits(['edit', 'delete', 'status-change']);
 
-const isDeleteConfirmVisible = ref(false);
+const showConfirm = ref(false);
 
 const statusOptions = [
 	{
@@ -44,7 +44,7 @@ const priorityConfig = {
 	},
 };
 
-function handleStatusChange(event) {
+function onStatusChange(event) {
 	emit('status-change', props.task.id, event.target.value);
 }
 </script>
@@ -78,7 +78,7 @@ function handleStatusChange(event) {
 					<Pencil :size="13" />
 				</button>
 
-				<button class="grid size-7 place-items-center rounded-lg text-muted/40 transition hover:bg-danger/10 hover:text-danger focus-visible:ring-2 focus-visible:ring-red-400" aria-label="Delete task" @click="isDeleteConfirmVisible = true">
+				<button class="grid size-7 place-items-center rounded-lg text-muted/40 transition hover:bg-danger/10 hover:text-danger focus-visible:ring-2 focus-visible:ring-red-400" aria-label="Delete task" @click="showConfirm = true">
 					<Trash2 :size="13" />
 				</button>
 			</div>
@@ -86,8 +86,8 @@ function handleStatusChange(event) {
 
 		<div class="mt-3 flex items-center gap-2 border-t border-border-light pt-2.5">
 			<div class="relative">
-				<select :value="task.status" class="appearance-none rounded-lg border border-border bg-column-bg py-1 pl-2 pr-6 text-[11px] font-medium text-muted outline-none transition hover:border-primary/30 focus:border-primary focus:ring-1 focus:ring-primary/10" @change="handleStatusChange">
-					<option v-for="statusOption in statusOptions" :key="statusOption.value" :value="statusOption.value">{{ statusOption.label }}</option>
+				<select :value="task.status" class="appearance-none rounded-lg border border-border bg-column-bg py-1 pl-2 pr-6 text-[11px] font-medium text-muted outline-none transition hover:border-primary/30 focus:border-primary focus:ring-1 focus:ring-primary/10" @change="onStatusChange">
+					<option v-for="opt in statusOptions" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
 				</select>
 
 				<ChevronDown class="pointer-events-none absolute right-1.5 top-1/2 -translate-y-1/2 text-muted/50" :size="12" />
@@ -95,6 +95,6 @@ function handleStatusChange(event) {
 		</div>
 
 		<!-- Delete confirmation modal -->
-		<ConfirmDialog v-if="isDeleteConfirmVisible" message="Delete this task?" confirm-label="Delete" @confirm="emit('delete', task.id)" @cancel="isDeleteConfirmVisible = false" />
+		<ConfirmDialog v-if="showConfirm" message="Delete this task?" confirm-label="Delete" @confirm="emit('delete', task.id)" @cancel="showConfirm = false" />
 	</article>
 </template>

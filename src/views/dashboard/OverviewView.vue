@@ -4,92 +4,92 @@ import { RouterLink } from 'vue-router';
 import { Layers, CheckCircle2, Clock, AlertTriangle, ArrowRight, BarChart3 } from '@lucide/vue';
 import { useTaskStore } from '@/stores/taskStore';
 
-const taskStore = useTaskStore();
+const store = useTaskStore();
 
-const dashboardStats = computed(() => [
+const stats = computed(() => [
 	{
 		label: 'Total Tasks',
-		value: taskStore.totalTaskCount,
+		value: store.total,
 		icon: Layers,
 		accent: 'bg-primary',
 	},
 	{
 		label: 'Completed',
-		value: taskStore.completedTaskCount,
+		value: store.doneCount,
 		icon: CheckCircle2,
 		accent: 'bg-success',
 	},
 	{
 		label: 'In Progress',
-		value: taskStore.inProgressCount,
+		value: store.inProgressCount,
 		icon: Clock,
 		accent: 'bg-info',
 	},
 	{
 		label: 'High Priority',
-		value: taskStore.highPriorityCount,
+		value: store.highCount,
 		icon: AlertTriangle,
 		accent: 'bg-danger',
 	},
 ]);
 
-const priorityBreakdownData = computed(() => {
-	const totalTasks = taskStore.totalTaskCount || 1;
+const priorityBreakdown = computed(() => {
+	const total = store.total || 1;
 	return [
 		{
 			label: 'High',
-			count: taskStore.highPriorityCount,
+			count: store.highCount,
 			color: 'bg-danger',
-			width: (taskStore.highPriorityCount / totalTasks) * 100,
+			width: (store.highCount / total) * 100,
 		},
 		{
 			label: 'Medium',
-			count: taskStore.mediumPriorityCount,
+			count: store.mediumCount,
 			color: 'bg-warning',
-			width: (taskStore.mediumPriorityCount / totalTasks) * 100,
+			width: (store.mediumCount / total) * 100,
 		},
 		{
 			label: 'Low',
-			count: taskStore.lowPriorityCount,
+			count: store.lowCount,
 			color: 'bg-success',
-			width: (taskStore.lowPriorityCount / totalTasks) * 100,
+			width: (store.lowCount / total) * 100,
 		},
 	];
 });
 
-const statusBreakdownData = computed(() => {
-	const totalTasks = taskStore.totalTaskCount || 1;
+const statusBreakdown = computed(() => {
+	const total = store.total || 1;
 	return [
 		{
 			label: 'To Do',
-			count: taskStore.todoCount,
+			count: store.todoCount,
 			color: 'bg-muted',
-			width: (taskStore.todoCount / totalTasks) * 100,
+			width: (store.todoCount / total) * 100,
 		},
 		{
 			label: 'In Progress',
-			count: taskStore.inProgressCount,
+			count: store.inProgressCount,
 			color: 'bg-primary',
-			width: (taskStore.inProgressCount / totalTasks) * 100,
+			width: (store.inProgressCount / total) * 100,
 		},
 		{
 			label: 'Done',
-			count: taskStore.completedTaskCount,
+			count: store.doneCount,
 			color: 'bg-success',
-			width: (taskStore.completedTaskCount / totalTasks) * 100,
+			width: (store.doneCount / total) * 100,
 		},
 	];
 });
 
-const progressRingCircumference = 2 * Math.PI * 45;
-const progressRingDashOffset = computed(() => progressRingCircumference - (taskStore.completionPercentage / 100) * progressRingCircumference);
+const circumference = 2 * Math.PI * 45;
+const dashOffset = computed(() => circumference - (store.progress / 100) * circumference);
 
-const statusBadgeStyles = {
+const statusBadge = {
 	todo: 'bg-muted/10 text-muted',
 	'in-progress': 'bg-info/10 text-info',
 	done: 'bg-success/10 text-success',
 };
-const statusDisplayLabels = {
+const statusLabel = {
 	todo: 'To Do',
 	'in-progress': 'In Progress',
 	done: 'Done',
@@ -107,7 +107,7 @@ const statusDisplayLabels = {
 
 		<!-- Stats cards -->
 		<div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-			<div v-for="stat in dashboardStats" :key="stat.label" class="group relative overflow-hidden rounded-xl border border-border bg-card-bg p-4 shadow-card transition hover:shadow-card-hover">
+			<div v-for="stat in stats" :key="stat.label" class="group relative overflow-hidden rounded-xl border border-border bg-card-bg p-4 shadow-card transition hover:shadow-card-hover">
 				<div class="absolute left-0 top-0 h-full w-0.5 rounded-r" :class="stat.accent"></div>
 
 				<div class="flex items-center justify-between">
@@ -129,7 +129,7 @@ const statusDisplayLabels = {
 				<div class="flex items-center justify-between">
 					<h2 class="text-xs font-semibold uppercase tracking-wider text-muted">Task Progress</h2>
 
-					<span class="text-xs text-muted">{{ taskStore.completedTaskCount }} of {{ taskStore.totalTaskCount }}</span>
+					<span class="text-xs text-muted">{{ store.doneCount }} of {{ store.total }}</span>
 				</div>
 
 				<div class="mt-5 flex flex-col items-center gap-6 sm:flex-row sm:items-start">
@@ -138,12 +138,12 @@ const statusDisplayLabels = {
 						<svg class="size-32 -rotate-90" viewBox="0 0 100 100">
 							<circle cx="50" cy="50" r="45" fill="none" stroke-width="7" class="stroke-border-light" />
 
-							<circle cx="50" cy="50" r="45" fill="none" stroke-width="7" stroke-linecap="round" class="stroke-primary transition-all duration-500" :stroke-dasharray="progressRingCircumference" :stroke-dashoffset="progressRingDashOffset" />
+							<circle cx="50" cy="50" r="45" fill="none" stroke-width="7" stroke-linecap="round" class="stroke-primary transition-all duration-500" 						:stroke-dasharray="circumference" :stroke-dashoffset="dashOffset" />
 						</svg>
 
 						<div class="absolute inset-0 grid place-items-center">
 							<div class="text-center">
-								<p class="text-2xl font-bold text-ink">{{ taskStore.completionPercentage }}<span class="text-sm text-muted">%</span></p>
+								<p class="text-2xl font-bold text-ink">{{ store.progress }}<span class="text-sm text-muted">%</span></p>
 
 								<p class="text-[10px] font-medium uppercase tracking-wider text-muted">Done</p>
 							</div>
@@ -152,19 +152,19 @@ const statusDisplayLabels = {
 
 					<!-- Status bars -->
 					<div class="flex-1 space-y-3.5">
-						<div v-for="statusItem in statusBreakdownData" :key="statusItem.label">
+						<div v-for="item in statusBreakdown" :key="item.label">
 							<div class="flex items-center justify-between">
 								<div class="flex items-center gap-2">
-									<span class="size-1.5 rounded-full" :class="statusItem.color"></span>
+									<span class="size-1.5 rounded-full" :class="item.color"></span>
 
-									<span class="text-xs font-medium text-ink">{{ statusItem.label }}</span>
+									<span class="text-xs font-medium text-ink">{{ item.label }}</span>
 								</div>
 
-								<span class="text-xs tabular-nums text-muted">{{ statusItem.count }}</span>
+								<span class="text-xs tabular-nums text-muted">{{ item.count }}</span>
 							</div>
 
 							<div class="mt-1.5 h-1.5 overflow-hidden rounded-full bg-border-light">
-								<div class="h-full rounded-full transition-all duration-500" :class="statusItem.color" :style="{ width: `${statusItem.width}%` }"></div>
+								<div class="h-full rounded-full transition-all duration-500" :class="item.color" :style="{ width: `${item.width}%` }"></div>
 							</div>
 						</div>
 					</div>
@@ -176,19 +176,19 @@ const statusDisplayLabels = {
 				<h2 class="text-xs font-semibold uppercase tracking-wider text-muted">Priority</h2>
 
 				<div class="mt-4 space-y-3.5">
-					<div v-for="priorityItem in priorityBreakdownData" :key="priorityItem.label">
+					<div v-for="item in priorityBreakdown" :key="item.label">
 						<div class="flex items-center justify-between">
 							<div class="flex items-center gap-2">
-								<span class="size-1.5 rounded-full" :class="priorityItem.color"></span>
+								<span class="size-1.5 rounded-full" :class="item.color"></span>
 
-								<span class="text-xs font-medium text-ink">{{ priorityItem.label }}</span>
+								<span class="text-xs font-medium text-ink">{{ item.label }}</span>
 							</div>
 
-							<span class="text-xs tabular-nums text-muted">{{ priorityItem.count }}</span>
+							<span class="text-xs tabular-nums text-muted">{{ item.count }}</span>
 						</div>
 
 						<div class="mt-1.5 h-1.5 overflow-hidden rounded-full bg-border-light">
-							<div class="h-full rounded-full transition-all duration-500" :class="priorityItem.color" :style="{ width: `${priorityItem.width}%` }"></div>
+							<div class="h-full rounded-full transition-all duration-500" :class="item.color" :style="{ width: `${item.width}%` }"></div>
 						</div>
 					</div>
 				</div>
@@ -206,13 +206,13 @@ const statusDisplayLabels = {
 				</RouterLink>
 			</div>
 
-			<div v-if="taskStore.tasks.length > 0" class="mt-4 divide-y divide-border-light">
-				<div v-for="recentTask in taskStore.tasks.slice(0, 5)" :key="recentTask.id" class="flex items-center gap-3 rounded-lg px-2 py-2.5 transition hover:bg-column-bg/50 -mx-2 first:mt-0 last:mb-0">
-					<div class="min-w-0 flex-1">
-						<p class="truncate text-sm font-medium text-ink">{{ recentTask.title }}</p>
-					</div>
+		<div v-if="store.tasks.length > 0" class="mt-4 divide-y divide-border-light">
+			<div v-for="task in store.tasks.slice(0, 5)" :key="task.id" class="flex items-center gap-3 rounded-lg px-2 py-2.5 transition hover:bg-column-bg/50 -mx-2 first:mt-0 last:mb-0">
+				<div class="min-w-0 flex-1">
+					<p class="truncate text-sm font-medium text-ink">{{ task.title }}</p>
+				</div>
 
-					<span class="shrink-0 rounded-md px-2 py-0.5 text-[11px] font-semibold" :class="statusBadgeStyles[recentTask.status]">{{ statusDisplayLabels[recentTask.status] }}</span>
+				<span class="shrink-0 rounded-md px-2 py-0.5 text-[11px] font-semibold" :class="statusBadge[task.status]">{{ statusLabel[task.status] }}</span>
 				</div>
 			</div>
 
