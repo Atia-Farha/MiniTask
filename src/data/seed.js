@@ -1,0 +1,51 @@
+export const seedTasks = [
+	{
+		id: 'seed-1',
+		title: 'Design the landing page wireframe',
+		description: 'Create low-fidelity wireframes for the marketing homepage.',
+		priority: 'high',
+		status: 'done',
+	},
+	{
+		id: 'seed-2',
+		title: 'Set up Vue 3 project with Vite',
+		description: 'Initialize the project, install dependencies, and configure Tailwind CSS.',
+		priority: 'high',
+		status: 'done',
+	},
+	{
+		id: 'seed-3',
+		title: 'Build the task creation form',
+		description: 'Implement TaskForm with title, description, and priority fields.',
+		priority: 'medium',
+		status: 'in-progress',
+	},
+	{
+		id: 'seed-4',
+		title: 'Implement Pinia task store',
+		description: 'Create the central store for task CRUD, filtering, and localStorage persistence.',
+		priority: 'high',
+		status: 'in-progress',
+	},
+	{
+		id: 'seed-5',
+		title: 'Write the README documentation',
+		description: 'Document setup instructions, features, and project structure.',
+		priority: 'low',
+		status: 'todo',
+	},
+	{
+		id: 'seed-6',
+		title: 'Add search and priority filter',
+		description: 'Build TaskFilter with title search and priority dropdown.',
+		priority: 'medium',
+		status: 'todo',
+	},
+	{
+		id: 'seed-7',
+		title: 'Polish responsive layout',
+		description: 'Test and fix mobile breakpoints, ensure touch-friendly targets.',
+		priority: 'medium',
+		status: 'todo',
+	},
+];
