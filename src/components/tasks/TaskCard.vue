@@ -95,6 +95,6 @@ function onStatusChange(event) {
 		</div>
 
 		<!-- Delete confirmation modal -->
-		<ConfirmDialog v-if="showConfirm" message="Delete this task?" confirm-label="Delete" @confirm="emit('delete', task.id)" @cancel="showConfirm = false" />
+		<ConfirmDialog v-if="showConfirm" message="Are you sure you want to delete this task?" confirm-label="Delete" @confirm="emit('delete', task.id)" @cancel="showConfirm = false" />
 	</article>
 </template>

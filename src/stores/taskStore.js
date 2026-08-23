@@ -64,7 +64,7 @@ export const useTaskStore = defineStore('tasks', () => {
 
 	function updateTask(id, updates) {
 		const index = tasks.value.findIndex((task) => task.id === id);
-		if (index === -1) return { error: 'Task not found.' };
+		if (index === -1) return { error: 'This task no longer exists.' };
 		if (updates.title !== undefined) {
 			const error = validateTitle(updates.title);
 			if (error) return { error };

@@ -29,7 +29,7 @@ watch(
 function submit() {
 	error.value = '';
 	if (!title.value.trim()) {
-		error.value = 'Title is required.';
+		error.value = 'Please enter a task title.';
 		return;
 	}
 	emit('submit', {

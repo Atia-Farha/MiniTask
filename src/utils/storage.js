@@ -15,6 +15,6 @@ export function saveTasks(tasks) {
 	try {
 		localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
 	} catch {
-		alert('Failed to save tasks. Please try again later.');
+		alert("We couldn't save your tasks. Your changes may not persist after refresh.");
 	}
 }
