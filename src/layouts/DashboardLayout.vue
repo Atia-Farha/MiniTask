@@ -38,19 +38,24 @@ function openNewTask() {
 				<div class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary">
 					<span class="text-sm font-bold text-white">M</span>
 				</div>
+
 				<span v-if="!collapsed" class="text-sm font-bold tracking-tight text-ink">MiniTask</span>
+
 				<button class="ml-auto grid size-7 shrink-0 place-items-center rounded-md text-muted transition hover:bg-column-bg hover:text-ink lg:hidden" @click="sidebarOpen = false">
 					<X :size="16" />
 				</button>
 			</div>
 
-			<nav class="flex-1 overflow-y-auto py-3" :class="collapsed ? 'px-2' : 'px-2.5'">
+			<nav class="flex-1 overflow-y-auto py-3 space-y-1" :class="collapsed ? 'px-2' : 'px-2.5'">
 				<RouterLink to="/dashboard" class="flex items-center gap-2.5 rounded-lg py-2 text-[13px] font-medium text-muted transition hover:bg-column-bg hover:text-ink" :class="collapsed ? 'justify-center px-0' : 'px-2.5'" exact-active-class="!bg-primary/5 !font-semibold !text-primary">
 					<BarChart3 :size="17" class="shrink-0" />
+
 					<span v-if="!collapsed">Overview</span>
 				</RouterLink>
+
 				<RouterLink to="/dashboard/tasks" class="flex items-center gap-2.5 rounded-lg py-2 text-[13px] font-medium text-muted transition hover:bg-column-bg hover:text-ink" :class="collapsed ? 'justify-center px-0' : 'px-2.5'" exact-active-class="!bg-primary/5 !font-semibold !text-primary">
 					<CheckSquare :size="17" class="shrink-0" />
+
 					<span v-if="!collapsed">Tasks</span>
 				</RouterLink>
 			</nav>
@@ -58,7 +63,9 @@ function openNewTask() {
 			<div class="hidden shrink-0 border-t border-border py-2 lg:block" :class="collapsed ? 'px-2' : 'px-2.5'">
 				<button class="flex w-full items-center gap-2.5 rounded-lg py-2 text-[13px] font-medium text-muted transition hover:bg-column-bg hover:text-ink" :class="collapsed ? 'justify-center px-0' : 'px-2.5'" @click="toggleCollapse">
 					<PanelLeftClose v-if="!collapsed" :size="17" class="shrink-0" />
+
 					<PanelLeft v-else :size="17" class="shrink-0" />
+
 					<span v-if="!collapsed">Collapse</span>
 				</button>
 			</div>
@@ -72,11 +79,14 @@ function openNewTask() {
 					<button class="grid size-8 place-items-center rounded-lg text-muted transition hover:bg-column-bg hover:text-ink lg:hidden" @click="sidebarOpen = true">
 						<Menu :size="20" />
 					</button>
+
 					<div>
 						<h1 class="text-base font-bold leading-tight text-primary">{{ pageTitle }}</h1>
+
 						<p v-if="pageSubtitle" class="text-xs text-muted">{{ pageSubtitle }}</p>
 					</div>
 				</div>
+
 				<button class="btn btn-primary btn-sm btn-rounded-xl" @click="openNewTask">
 					<Plus :size="16" />
 					New Task

@@ -10,6 +10,9 @@ importers:
             '@lucide/vue':
                 specifier: ^1.33.0
                 version: 1.33.0(vue@3.5.41)
+            apexcharts:
+                specifier: ^6.10.0
+                version: 6.10.0
             pinia:
                 specifier: ^4.0.2
                 version: 4.0.3(@vue/devtools-api@8.2.1)(vue@3.5.41)
@@ -19,6 +22,9 @@ importers:
             vue-router:
                 specifier: ^5.2.0
                 version: 5.2.0(@vue/compiler-sfc@3.5.41)(pinia@4.0.3(@vue/devtools-api@8.2.1)(vue@3.5.41))(rolldown@1.2.4)(vite@8.2.1(jiti@2.7.0)(yaml@2.9.0))(vue@3.5.41)
+            vue3-apexcharts:
+                specifier: ^1.11.1
+                version: 1.11.1(apexcharts@6.10.0)(vue@3.5.41)
         devDependencies:
             '@eslint/js':
                 specifier: ^10.0.1
@@ -728,6 +734,13 @@ packages:
     ansis@4.3.1:
         resolution: { integrity: sha512-BJ8/l4R5LRE7hW9WdSuGYrLSHi2ynxeFpDFbH0K/CgNeY/tyhk+vO6TYxXC5r5CpUhNVX310xzPsN/H9lCdfOA== }
         engines: { node: '>=14' }
+
+    apex-commons@0.5.0:
+        resolution: { integrity: sha512-xz83SgPREE1wGtoflvxjwJtcjzl5bKTz2/bDxWCZNL6QVjUNE47kMg/1Zqt0bSh6eOnmFCWlTDc3RU8o85N+wg== }
+
+    apexcharts@6.10.0:
+        resolution: { integrity: sha512-XkDW9pb5L5jrjox86Q20gR2w6YnU4hUpv+FjL1eKtYKQGtyTUSsnFeuUE8wVDz8hNNHbOEx7Sl9cjfCmhB3NVw== }
+        engines: { node: ^20.19.0 || ^22.12.0 || >=24.0.0 }
 
     ast-kit@2.2.0:
         resolution: { integrity: sha512-m1Q/RaVOnTp9JxPX+F+Zn7IcLYMzM8kZofDImfsKZd8MbR+ikdOzTeztStWqfrqIxZnYWryyI9ePm3NGjnZgGw== }
@@ -1602,6 +1615,12 @@ packages:
             vite:
                 optional: true
 
+    vue3-apexcharts@1.11.1:
+        resolution: { integrity: sha512-MbN3vg8bMG19wc0Lm1HkeQvODgLm56DgpIxtNUO0xpf/JCzYWVGE4jzXp2JISzy2s3Kul1yOxNQUYsLvKQ5L9g== }
+        peerDependencies:
+            apexcharts: '>=5.10.0'
+            vue: '>=3.0.0'
+
     vue@3.5.41:
         resolution: { integrity: sha512-2laE0p+aK+/AOPG/XL/WepOs/GlK755LJ1XECi9kDUrz1FKNw8rb2Xzlw9JS1rqEV55nb0ttsKxVlTCcd+R5cg== }
         peerDependencies:
@@ -2249,6 +2268,12 @@ snapshots:
     ansi-styles@7.0.0: {}
 
     ansis@4.3.1: {}
+
+    apex-commons@0.5.0: {}
+
+    apexcharts@6.10.0:
+        dependencies:
+            apex-commons: 0.5.0
 
     ast-kit@2.2.0:
         dependencies:
@@ -3002,6 +3027,11 @@ snapshots:
             - rollup
             - unloader
             - webpack
+
+    vue3-apexcharts@1.11.1(apexcharts@6.10.0)(vue@3.5.41):
+        dependencies:
+            apexcharts: 6.10.0
+            vue: 3.5.41
 
     vue@3.5.41:
         dependencies:

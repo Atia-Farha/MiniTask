@@ -33,56 +33,78 @@ const stats = computed(() => [
 	},
 ]);
 
-const priorityBreakdown = computed(() => {
-	const total = store.total || 1;
-	return [
-		{
-			label: 'High',
-			count: store.highCount,
-			color: 'bg-danger',
-			width: (store.highCount / total) * 100,
+const progressOptions = computed(() => ({
+	chart: { type: 'radialBar' },
+	plotOptions: {
+		radialBar: {
+			hollow: { size: '60%' },
 		},
-		{
-			label: 'Medium',
-			count: store.mediumCount,
-			color: 'bg-warning',
-			width: (store.mediumCount / total) * 100,
-		},
-		{
-			label: 'Low',
-			count: store.lowCount,
-			color: 'bg-success',
-			width: (store.lowCount / total) * 100,
-		},
-	];
-});
+	},
+	stroke: { lineCap: 'round' },
+	colors: ['#e24790'],
+	labels: ['Completed'],
+}));
 
-const statusBreakdown = computed(() => {
-	const total = store.total || 1;
-	return [
-		{
-			label: 'To Do',
-			count: store.todoCount,
-			color: 'bg-muted',
-			width: (store.todoCount / total) * 100,
-		},
-		{
-			label: 'In Progress',
-			count: store.inProgressCount,
-			color: 'bg-primary',
-			width: (store.inProgressCount / total) * 100,
-		},
-		{
-			label: 'Done',
-			count: store.doneCount,
-			color: 'bg-success',
-			width: (store.doneCount / total) * 100,
-		},
-	];
-});
+const progressSeries = computed(() => [store.progress]);
 
-const circumference = 2 * Math.PI * 45;
-const dashOffset = computed(() => circumference - (store.progress / 100) * circumference);
+const priorityOptions = computed(() => ({
+	chart: { type: 'bar', stacked: true, toolbar: { show: false } },
+	plotOptions: {
+		bar: {
+			horizontal: true,
+			borderRadius: 6,
+		},
+	},
+	yaxis: {
+		labels: {
+			show: true,
+			style: { fontSize: '13px', fontWeight: 600, colors: ['#2b1b27'] },
+		},
+	},
+	xaxis: {
+		categories: ['High', 'Medium', 'Low'],
+		labels: {
+			show: false,
+		},
+		axisBorder: { show: false },
+		axisTicks: { show: false },
+	},
+	grid: { show: false },
+	legend: { show: false },
+	tooltip: { enabled: false },
+}));
+
+const prioritySeries = computed(() => [
+	{ name: 'High', data: [store.highCount, 0, 0], color: '#dc3545' },
+	{ name: 'Medium', data: [0, store.mediumCount, 0], color: '#f59e0b' },
+	{ name: 'Low', data: [0, 0, store.lowCount], color: '#1f8a70' },
+]);
+
+const statusOptions = computed(() => ({
+	chart: {
+		type: 'donut',
+	},
+	labels: ['To Do', 'In Progress', 'Done'],
+	colors: ['#735f6d', '#e24790', '#1f8a70'],
+	plotOptions: {
+		pie: {
+			borderRadius: 6,
+			spacing: 4,
+			donut: {
+				size: '68%',
+			},
+		},
+	},
+	stroke: {
+		width: 0,
+	},
+	dataLabels: {
+		enabled: true,
+		formatter: (val, opts) => opts.w.config.series[opts.seriesIndex],
+	},
+}));
+
+const statusSeries = computed(() => [store.todoCount, store.inProgressCount, store.doneCount]);
 
 const statusBadge = {
 	todo: 'bg-muted/10 text-muted',
@@ -122,9 +144,9 @@ const statusLabel = {
 			</div>
 		</div>
 
-		<!-- Progress + Priority row -->
-		<div class="grid gap-3 lg:grid-cols-[1fr_300px]">
-			<!-- Progress ring + status breakdown -->
+		<!-- Charts row -->
+		<div class="grid gap-3 lg:grid-cols-3">
+			<!-- Progress radial -->
 			<div class="rounded-xl border border-border bg-card-bg p-5 shadow-card">
 				<div class="flex items-center justify-between">
 					<h2 class="text-xs font-semibold uppercase tracking-wider text-muted">Task Progress</h2>
@@ -132,42 +154,8 @@ const statusLabel = {
 					<span class="text-xs text-muted">{{ store.doneCount }} of {{ store.total }}</span>
 				</div>
 
-				<div class="mt-5 flex flex-col items-center gap-6 sm:flex-row sm:items-start">
-					<!-- Ring -->
-					<div class="relative size-32 shrink-0">
-						<svg class="size-32 -rotate-90" viewBox="0 0 100 100">
-							<circle cx="50" cy="50" r="45" fill="none" stroke-width="7" class="stroke-border-light" />
-
-							<circle cx="50" cy="50" r="45" fill="none" stroke-width="7" stroke-linecap="round" class="stroke-primary transition-all duration-500" :stroke-dasharray="circumference" :stroke-dashoffset="dashOffset" />
-						</svg>
-
-						<div class="absolute inset-0 grid place-items-center">
-							<div class="text-center">
-								<p class="text-2xl font-bold text-ink">{{ store.progress }}<span class="text-sm text-muted">%</span></p>
-
-								<p class="text-[10px] font-medium uppercase tracking-wider text-muted">Done</p>
-							</div>
-						</div>
-					</div>
-
-					<!-- Status bars -->
-					<div class="flex-1 space-y-3.5">
-						<div v-for="item in statusBreakdown" :key="item.label">
-							<div class="flex items-center justify-between">
-								<div class="flex items-center gap-2">
-									<span class="size-1.5 rounded-full" :class="item.color"></span>
-
-									<span class="text-xs font-medium text-ink">{{ item.label }}</span>
-								</div>
-
-								<span class="text-xs tabular-nums text-muted">{{ item.count }}</span>
-							</div>
-
-							<div class="mt-1.5 h-1.5 overflow-hidden rounded-full bg-border-light">
-								<div class="h-full rounded-full transition-all duration-500" :class="item.color" :style="{ width: `${item.width}%` }"></div>
-							</div>
-						</div>
-					</div>
+				<div class="h-full w-full flex justify-center items-center">
+					<apexchart type="radialBar" height="220" :options="progressOptions" :series="progressSeries" />
 				</div>
 			</div>
 
@@ -175,22 +163,17 @@ const statusLabel = {
 			<div class="rounded-xl border border-border bg-card-bg p-5 shadow-card">
 				<h2 class="text-xs font-semibold uppercase tracking-wider text-muted">Priority</h2>
 
-				<div class="mt-4 space-y-3.5">
-					<div v-for="item in priorityBreakdown" :key="item.label">
-						<div class="flex items-center justify-between">
-							<div class="flex items-center gap-2">
-								<span class="size-1.5 rounded-full" :class="item.color"></span>
+				<div class="h-full w-full flex justify-center items-center">
+					<apexchart type="bar" :options="priorityOptions" :series="prioritySeries" />
+				</div>
+			</div>
 
-								<span class="text-xs font-medium text-ink">{{ item.label }}</span>
-							</div>
+			<!-- Status breakdown -->
+			<div class="rounded-xl border border-border bg-card-bg p-5 shadow-card">
+				<h2 class="text-xs font-semibold uppercase tracking-wider text-muted">Status</h2>
 
-							<span class="text-xs tabular-nums text-muted">{{ item.count }}</span>
-						</div>
-
-						<div class="mt-1.5 h-1.5 overflow-hidden rounded-full bg-border-light">
-							<div class="h-full rounded-full transition-all duration-500" :class="item.color" :style="{ width: `${item.width}%` }"></div>
-						</div>
-					</div>
+				<div class="h-full w-full flex justify-center items-center">
+					<apexchart type="donut" :options="statusOptions" :series="statusSeries" />
 				</div>
 			</div>
 		</div>
