@@ -60,6 +60,7 @@ import { ArrowRight, Check, ListChecks, Sparkles, TrendingUp } from '@lucide/vue
 				</div>
 
 				<!-- Mockup -->
+
 				<div class="relative mx-auto w-full select-none overflow-hidden sm:overflow-visible">
 					<div class="rounded-[1.65rem] border border-white/75 bg-surface p-3 sm:p-4 shadow">
 						<div class="overflow-hidden rounded-2xl border border-primary/10 bg-board-bg">

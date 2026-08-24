@@ -40,6 +40,8 @@ function cancel() {
 <template>
 	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm" @click.self="cancel">
 		<div class="w-full max-w-md overflow-hidden rounded-2xl border border-border bg-card-bg shadow-modal">
+			<!-- Header -->
+
 			<div class="flex items-center justify-between px-6 pt-5 pb-0">
 				<h2 class="text-md font-bold text-primary">{{ editTask ? 'Edit Task' : 'New Task' }}</h2>
 
@@ -50,6 +52,8 @@ function cancel() {
 
 			<form class="px-6 pt-5 pb-6" @submit.prevent="submit">
 				<div class="space-y-4">
+					<!-- Title -->
+
 					<div>
 						<div class="mb-1.5 flex items-baseline justify-between">
 							<label for="task-title" class="text-xs font-semibold uppercase tracking-wider text-muted">Title</label>
@@ -60,6 +64,8 @@ function cancel() {
 						<input id="task-title" v-model="title" type="text" placeholder="e.g. Design landing page" maxlength="120" class="w-full rounded-xl border border-border bg-column-bg px-3.5 py-2.5 text-sm text-ink placeholder-muted/30 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10" autofocus />
 					</div>
 
+					<!-- Description -->
+
 					<div>
 						<div class="mb-1.5 flex items-baseline justify-between">
 							<label for="task-desc" class="text-xs font-semibold uppercase tracking-wider text-muted">Description</label>
@@ -69,6 +75,8 @@ function cancel() {
 
 						<textarea id="task-desc" v-model="desc" rows="3" maxlength="1000" placeholder="Optional details about this task..." class="w-full resize-none rounded-xl border border-border bg-column-bg px-3.5 py-2.5 text-sm text-ink placeholder-muted/30 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10"></textarea>
 					</div>
+
+					<!-- Priority -->
 
 					<div>
 						<label class="mb-2 block text-xs font-semibold uppercase tracking-wider text-muted">Priority</label>
@@ -92,10 +100,14 @@ function cancel() {
 					</div>
 				</div>
 
+				<!-- Error -->
+
 				<p v-if="error" class="mt-3 flex items-center gap-1.5 rounded-lg bg-danger/5 px-3 py-2 text-xs text-danger">
 					<span class="size-1 shrink-0 rounded-full bg-danger"></span>
 					{{ error }}
 				</p>
+
+				<!-- Actions -->
 
 				<div class="mt-5 flex gap-2">
 					<button type="button" class="btn btn-secondary btn-md flex-1 rounded-xl" @click="cancel">Cancel</button>

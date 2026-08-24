@@ -52,7 +52,6 @@ function openNewTask() {
 			</nav>
 		</aside>
 
-		<!-- Main content -->
 		<div class="flex min-w-0 flex-1 flex-col">
 			<!-- Topbar -->
 			<header class="flex h-14 shrink-0 items-center justify-between border-b border-border bg-card-bg px-4 backdrop-blur-sm sm:px-6">
@@ -72,6 +71,7 @@ function openNewTask() {
 				</button>
 			</header>
 
+			<!-- Main content -->
 			<main class="flex-1 overflow-auto p-4 sm:p-6 bg-board-bg">
 				<RouterView />
 			</main>

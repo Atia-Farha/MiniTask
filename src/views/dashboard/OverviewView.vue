@@ -68,11 +68,15 @@ const statusLabel = {
 
 <template>
 	<div class="space-y-6">
+		<!-- Header -->
+
 		<div>
 			<h1 class="text-lg font-bold text-ink">Overview</h1>
 
 			<p class="mt-0.5 text-sm text-muted">Your task dashboard at a glance.</p>
 		</div>
+
+		<!-- Stats -->
 
 		<div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
 			<div v-for="stat in stats" :key="stat.label" class="group relative overflow-hidden rounded-xl border border-border bg-card-bg p-4 shadow-card transition hover:shadow-card-hover">
@@ -90,7 +94,11 @@ const statusLabel = {
 			</div>
 		</div>
 
+		<!-- Charts -->
+
 		<div class="grid gap-3 lg:grid-cols-3">
+			<!-- Task Progress Radial Bar Chart -->
+
 			<div class="rounded-xl border border-border bg-card-bg p-5 shadow-card">
 				<div class="flex items-center justify-between">
 					<h2 class="text-xs font-semibold uppercase tracking-wider text-muted">Task Progress</h2>
@@ -103,6 +111,8 @@ const statusLabel = {
 				</div>
 			</div>
 
+			<!-- Priority Bar Chart -->
+
 			<div class="rounded-xl border border-border bg-card-bg p-5 shadow-card">
 				<h2 class="text-xs font-semibold uppercase tracking-wider text-muted">Priority</h2>
 
@@ -110,6 +120,8 @@ const statusLabel = {
 					<apexchart type="bar" :options="priorityOptions" :series="prioritySeries" />
 				</div>
 			</div>
+
+			<!-- Status Donut Chart -->
 
 			<div class="rounded-xl border border-border bg-card-bg p-5 shadow-card">
 				<h2 class="text-xs font-semibold uppercase tracking-wider text-muted">Status</h2>
@@ -119,6 +131,8 @@ const statusLabel = {
 				</div>
 			</div>
 		</div>
+
+		<!-- Recent Tasks -->
 
 		<div class="rounded-xl border border-border bg-card-bg p-5 shadow-card">
 			<div class="flex items-center justify-between">
@@ -139,6 +153,8 @@ const statusLabel = {
 					<span class="shrink-0 rounded-md px-2 py-0.5 text-[11px] font-semibold" :class="statusBadge[task.status]">{{ statusLabel[task.status] }}</span>
 				</div>
 			</div>
+
+			<!-- Empty State -->
 
 			<div v-else class="mt-6 flex flex-col items-center py-6 text-center">
 				<BarChart3 class="text-muted/20" :size="28" />

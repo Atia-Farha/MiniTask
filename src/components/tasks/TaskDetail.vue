@@ -30,6 +30,8 @@ function onDelete() {
 <template>
 	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm" @click.self="emit('close')">
 		<div class="flex max-h-[90vh] w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-border bg-card-bg shadow-modal">
+			<!-- Title -->
+
 			<div class="shrink-0 px-6 py-4 border-b border-border">
 				<h3 class="text-lg font-bold text-primary leading-snug">
 					{{ task.title }}
@@ -51,6 +53,8 @@ function onDelete() {
 				</div>
 			</div>
 
+			<!-- Description -->
+
 			<div class="min-h-0 flex-1 overflow-y-auto px-6 py-4">
 				<div class="mb-2 flex items-center gap-1.5">
 					<FileText class="text-muted/50" :size="13" />
@@ -63,6 +67,8 @@ function onDelete() {
 
 				<p v-else class="text-sm text-muted/40 italic">No description provided.</p>
 			</div>
+
+			<!-- Actions -->
 
 			<div class="flex shrink-0 gap-2 border-t border-border px-6 py-4">
 				<button class="btn btn-secondary btn-md flex-1 rounded-xl" @click="emit('close')">Close</button>
