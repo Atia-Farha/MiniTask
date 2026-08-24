@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { Pencil, Trash2, ChevronDown } from '@lucide/vue';
-import ConfirmDialog from '@/components/ui/ConfirmDialog.vue';
+import { ChevronDown } from '@lucide/vue';
 import TaskDetail from '@/components/tasks/TaskDetail.vue';
 
 const props = defineProps({
@@ -10,7 +9,6 @@ const props = defineProps({
 
 const emit = defineEmits(['edit', 'delete', 'status-change']);
 
-const showConfirm = ref(false);
 const showDetail = ref(false);
 
 const statusOptions = [
@@ -78,16 +76,6 @@ function onDetailStatusChange(id, status) {
 					</span>
 				</div>
 			</div>
-
-			<div class="flex shrink-0 items-center gap-0.5 opacity-0 transition group-hover:opacity-100">
-				<button class="grid size-7 place-items-center rounded-lg text-muted/40 transition hover:bg-primary/10 hover:text-primary focus-visible:ring-2 focus-visible:ring-primary" @click="emit('edit', task)">
-					<Pencil :size="13" />
-				</button>
-
-				<button class="grid size-7 place-items-center rounded-lg text-muted/40 transition hover:bg-danger/10 hover:text-danger focus-visible:ring-2 focus-visible:ring-red-400" @click="showConfirm = true">
-					<Trash2 :size="13" />
-				</button>
-			</div>
 		</div>
 
 		<div class="mt-3 flex items-center gap-2 border-t border-border-light pt-2.5">
@@ -103,11 +91,6 @@ function onDetailStatusChange(id, status) {
 
 	<!-- Task detail modal -->
 	<Teleport to="body">
-		<TaskDetail v-if="showDetail" :task="task" @close="showDetail = false" @status-change="onDetailStatusChange" />
-	</Teleport>
-
-	<!-- Delete confirmation modal -->
-	<Teleport to="body">
-		<ConfirmDialog v-if="showConfirm" message="Are you sure you want to delete this task?" confirm-label="Delete" @confirm="emit('delete', task.id)" @cancel="showConfirm = false" />
+		<TaskDetail v-if="showDetail" :task="task" @close="showDetail = false" @status-change="onDetailStatusChange" @edit="emit('edit', $event)" @delete="emit('delete', $event)" />
 	</Teleport>
 </template>

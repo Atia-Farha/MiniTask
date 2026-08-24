@@ -60,7 +60,7 @@ import { ArrowRight, Check, ListChecks, Sparkles, TrendingUp } from '@lucide/vue
 				</div>
 
 				<!-- Mockup -->
-				<div class="relative mx-auto w-full max-w-2xl select-none lg:mr-0">
+				<div class="relative mx-auto w-full select-none overflow-hidden lg:mr-0">
 					<div class="rounded-[1.65rem] border border-white/75 bg-surface p-3 sm:p-4 shadow">
 						<div class="overflow-hidden rounded-2xl border border-primary/10 bg-board-bg">
 							<div class="flex items-center gap-2 border-b border-primary/10 bg-surface px-4 py-3">
@@ -69,81 +69,83 @@ import { ArrowRight, Check, ListChecks, Sparkles, TrendingUp } from '@lucide/vue
 								<span class="size-2.5 rounded-full bg-primary/20"></span>
 								<span class="ml-2 h-2 w-24 rounded-full bg-primary/10"></span>
 							</div>
-							<div class="grid grid-cols-3 gap-2.5 p-3">
-								<!-- To Do -->
-								<div class="rounded-xl border border-border bg-column-bg/50 p-2.5">
-									<div class="mb-2.5 flex items-center gap-1.5">
-										<span class="size-1.5 rounded-full bg-muted/40"></span>
-										<span class="text-[9px] font-bold uppercase tracking-wider text-muted">To Do</span>
-										<span class="grid size-3.5 place-items-center rounded bg-column-bg text-[8px] font-bold text-muted">2</span>
-									</div>
-
-									<div class="space-y-2">
-										<!-- Task card 1 -->
-										<div class="relative rounded-lg border border-border bg-card-bg p-2.5 shadow-card">
-											<div class="absolute left-0 top-2.5 h-6 w-0.5 rounded-r-full bg-danger"></div>
-											<p class="pl-1.5 text-[10px] font-semibold text-ink">Design landing page</p>
-											<div class="mt-1.5 flex items-center gap-1 pl-1.5">
-												<span class="inline-flex items-center gap-0.5 rounded border border-danger/20 bg-danger/10 px-1 py-px text-[7px] font-semibold text-danger"> <span class="size-0.5 rounded-full bg-danger"></span>High </span>
-											</div>
+							<div class="overflow-x-auto">
+								<div class="grid min-w-120 grid-cols-3 gap-2.5 p-3">
+									<!-- To Do -->
+									<div class="rounded-xl border border-border bg-column-bg/50 p-2.5">
+										<div class="mb-2.5 flex items-center gap-1.5">
+											<span class="size-1.5 rounded-full bg-muted/40"></span>
+											<span class="text-[9px] font-bold uppercase tracking-wider text-muted">To Do</span>
+											<span class="grid size-3.5 place-items-center rounded bg-column-bg text-[8px] font-bold text-muted">2</span>
 										</div>
 
-										<!-- Task card 2 -->
-										<div class="relative rounded-lg border border-border bg-card-bg p-2.5 shadow-card">
-											<div class="absolute left-0 top-2.5 h-6 w-0.5 rounded-r-full bg-warning"></div>
-											<p class="pl-1.5 text-[10px] font-semibold text-ink">Write API docs</p>
-											<div class="mt-1.5 flex items-center gap-1 pl-1.5">
-												<span class="inline-flex items-center gap-0.5 rounded border border-warning/20 bg-warning/10 px-1 py-px text-[7px] font-semibold text-warning"> <span class="size-0.5 rounded-full bg-warning"></span>Medium </span>
+										<div class="space-y-2">
+											<!-- Task card 1 -->
+											<div class="relative rounded-lg border border-border bg-card-bg p-2.5 shadow-card">
+												<div class="absolute left-0 top-2.5 h-6 w-0.5 rounded-r-full bg-danger"></div>
+												<p class="pl-1.5 text-[10px] font-semibold text-ink">Design landing page</p>
+												<div class="mt-1.5 flex items-center gap-1 pl-1.5">
+													<span class="inline-flex items-center gap-0.5 rounded border border-danger/20 bg-danger/10 px-1 py-px text-[7px] font-semibold text-danger"> <span class="size-0.5 rounded-full bg-danger"></span>High </span>
+												</div>
 											</div>
-										</div>
-									</div>
-								</div>
 
-								<!-- In Progress column -->
-								<div class="rounded-xl border border-border bg-column-bg/50 p-2.5">
-									<div class="mb-2.5 flex items-center gap-1.5">
-										<span class="size-1.5 rounded-full bg-primary"></span>
-										<span class="text-[9px] font-bold uppercase tracking-wider text-muted">In Progress</span>
-										<span class="grid size-3.5 place-items-center rounded bg-column-bg text-[8px] font-bold text-muted">1</span>
-									</div>
-
-									<div class="space-y-2">
-										<!-- Task card 3 -->
-										<div class="relative rounded-lg border border-border bg-card-bg p-2.5 shadow-card">
-											<div class="absolute left-0 top-2.5 h-6 w-0.5 rounded-r-full bg-danger"></div>
-											<p class="pl-1.5 text-[10px] font-semibold text-ink">Implement auth flow</p>
-											<p class="mt-0.5 pl-1.5 text-[8px] leading-relaxed text-muted/60 line-clamp-1">OAuth2 integration with Google</p>
-											<div class="mt-1.5 flex items-center gap-1 pl-1.5">
-												<span class="inline-flex items-center gap-0.5 rounded border border-danger/20 bg-danger/10 px-1 py-px text-[7px] font-semibold text-danger"> <span class="size-0.5 rounded-full bg-danger"></span>High </span>
+											<!-- Task card 2 -->
+											<div class="relative rounded-lg border border-border bg-card-bg p-2.5 shadow-card">
+												<div class="absolute left-0 top-2.5 h-6 w-0.5 rounded-r-full bg-warning"></div>
+												<p class="pl-1.5 text-[10px] font-semibold text-ink">Write API docs</p>
+												<div class="mt-1.5 flex items-center gap-1 pl-1.5">
+													<span class="inline-flex items-center gap-0.5 rounded border border-warning/20 bg-warning/10 px-1 py-px text-[7px] font-semibold text-warning"> <span class="size-0.5 rounded-full bg-warning"></span>Medium </span>
+												</div>
 											</div>
 										</div>
 									</div>
-								</div>
 
-								<!-- Done column -->
-								<div class="rounded-xl border border-border bg-column-bg/50 p-2.5">
-									<div class="mb-2.5 flex items-center gap-1.5">
-										<span class="size-1.5 rounded-full bg-success"></span>
-										<span class="text-[9px] font-bold uppercase tracking-wider text-muted">Done</span>
-										<span class="grid size-3.5 place-items-center rounded bg-column-bg text-[8px] font-bold text-muted">2</span>
-									</div>
-
-									<div class="space-y-2">
-										<!-- Task card 4 -->
-										<div class="relative rounded-lg border border-border bg-card-bg p-2.5 shadow-card opacity-60">
-											<div class="absolute left-0 top-2.5 h-6 w-0.5 rounded-r-full bg-success"></div>
-											<p class="pl-1.5 text-[10px] font-semibold text-muted line-through decoration-2 decoration-muted/60">Set up repo</p>
-											<div class="mt-1.5 flex items-center gap-1 pl-1.5">
-												<span class="inline-flex items-center gap-0.5 rounded border border-success/20 bg-success/10 px-1 py-px text-[7px] font-semibold text-success"> <span class="size-0.5 rounded-full bg-success"></span>Low </span>
-											</div>
+									<!-- In Progress column -->
+									<div class="rounded-xl border border-border bg-column-bg/50 p-2.5">
+										<div class="mb-2.5 flex items-center gap-1.5">
+											<span class="size-1.5 rounded-full bg-primary"></span>
+											<span class="text-[9px] font-bold uppercase tracking-wider text-muted">In Progress</span>
+											<span class="grid size-3.5 place-items-center rounded bg-column-bg text-[8px] font-bold text-muted">1</span>
 										</div>
 
-										<!-- Task card 5 -->
-										<div class="relative rounded-lg border border-border bg-card-bg p-2.5 shadow-card opacity-60">
-											<div class="absolute left-0 top-2.5 h-6 w-0.5 rounded-r-full bg-success"></div>
-											<p class="pl-1.5 text-[10px] font-semibold text-muted line-through decoration-2 decoration-muted/60">Install dependencies</p>
-											<div class="mt-1.5 flex items-center gap-1 pl-1.5">
-												<span class="inline-flex items-center gap-0.5 rounded border border-success/20 bg-success/10 px-1 py-px text-[7px] font-semibold text-success"> <span class="size-0.5 rounded-full bg-success"></span>Low </span>
+										<div class="space-y-2">
+											<!-- Task card 3 -->
+											<div class="relative rounded-lg border border-border bg-card-bg p-2.5 shadow-card">
+												<div class="absolute left-0 top-2.5 h-6 w-0.5 rounded-r-full bg-danger"></div>
+												<p class="pl-1.5 text-[10px] font-semibold text-ink">Implement auth flow</p>
+												<p class="mt-0.5 pl-1.5 text-[8px] leading-relaxed text-muted/60 line-clamp-1">OAuth2 integration with Google</p>
+												<div class="mt-1.5 flex items-center gap-1 pl-1.5">
+													<span class="inline-flex items-center gap-0.5 rounded border border-danger/20 bg-danger/10 px-1 py-px text-[7px] font-semibold text-danger"> <span class="size-0.5 rounded-full bg-danger"></span>High </span>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<!-- Done column -->
+									<div class="rounded-xl border border-border bg-column-bg/50 p-2.5">
+										<div class="mb-2.5 flex items-center gap-1.5">
+											<span class="size-1.5 rounded-full bg-success"></span>
+											<span class="text-[9px] font-bold uppercase tracking-wider text-muted">Done</span>
+											<span class="grid size-3.5 place-items-center rounded bg-column-bg text-[8px] font-bold text-muted">2</span>
+										</div>
+
+										<div class="space-y-2">
+											<!-- Task card 4 -->
+											<div class="relative rounded-lg border border-border bg-card-bg p-2.5 shadow-card opacity-60">
+												<div class="absolute left-0 top-2.5 h-6 w-0.5 rounded-r-full bg-success"></div>
+												<p class="pl-1.5 text-[10px] font-semibold text-muted line-through decoration-2 decoration-muted/60">Set up repo</p>
+												<div class="mt-1.5 flex items-center gap-1 pl-1.5">
+													<span class="inline-flex items-center gap-0.5 rounded border border-success/20 bg-success/10 px-1 py-px text-[7px] font-semibold text-success"> <span class="size-0.5 rounded-full bg-success"></span>Low </span>
+												</div>
+											</div>
+
+											<!-- Task card 5 -->
+											<div class="relative rounded-lg border border-border bg-card-bg p-2.5 shadow-card opacity-60">
+												<div class="absolute left-0 top-2.5 h-6 w-0.5 rounded-r-full bg-success"></div>
+												<p class="pl-1.5 text-[10px] font-semibold text-muted line-through decoration-2 decoration-muted/60">Install dependencies</p>
+												<div class="mt-1.5 flex items-center gap-1 pl-1.5">
+													<span class="inline-flex items-center gap-0.5 rounded border border-success/20 bg-success/10 px-1 py-px text-[7px] font-semibold text-success"> <span class="size-0.5 rounded-full bg-success"></span>Low </span>
+												</div>
 											</div>
 										</div>
 									</div>

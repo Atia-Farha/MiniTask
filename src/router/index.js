@@ -34,7 +34,6 @@ const router = createRouter({
 					component: OverviewView,
 					meta: {
 						title: 'Overview',
-						subtitle: 'Your task summary at a glance.',
 					},
 				},
 				{
@@ -43,7 +42,6 @@ const router = createRouter({
 					component: TasksView,
 					meta: {
 						title: 'Tasks',
-						subtitle: 'Organize and manage your tasks.',
 					},
 				},
 			],

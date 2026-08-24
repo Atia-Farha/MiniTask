@@ -12,7 +12,6 @@ const sidebarOpen = ref(false);
 const collapsed = ref(localStorage.getItem('minitask.sidebar.collapsed') === 'true');
 
 const pageTitle = computed(() => route.meta.title || 'Dashboard');
-const pageSubtitle = computed(() => route.meta.subtitle || '');
 
 function toggleCollapse() {
 	collapsed.value = !collapsed.value;
@@ -81,9 +80,7 @@ function openNewTask() {
 					</button>
 
 					<div>
-						<h1 class="text-base font-bold leading-tight text-primary">{{ pageTitle }}</h1>
-
-						<p v-if="pageSubtitle" class="text-xs text-muted">{{ pageSubtitle }}</p>
+						<h1 class="text-xl font-bold leading-tight text-primary">{{ pageTitle }}</h1>
 					</div>
 				</div>
 

@@ -1,12 +1,15 @@
 <script setup>
-import { onMounted, onUnmounted } from 'vue';
-import { X, ChevronDown, FileText } from '@lucide/vue';
+import { ref, onMounted, onUnmounted } from 'vue';
+import { ChevronDown, FileText, Pencil, Trash2 } from '@lucide/vue';
+import ConfirmDialog from '@/components/ui/ConfirmDialog.vue';
 
 const props = defineProps({
 	task: { type: Object, required: true },
 });
 
-const emit = defineEmits(['close', 'status-change']);
+const emit = defineEmits(['close', 'status-change', 'edit', 'delete']);
+
+const showConfirm = ref(false);
 
 const statusOptions = [
 	{ value: 'todo', label: 'To Do' },
@@ -36,6 +39,16 @@ function onStatusChange(event) {
 	emit('status-change', props.task.id, event.target.value);
 }
 
+function onEdit() {
+	emit('edit', props.task);
+	emit('close');
+}
+
+function onDelete() {
+	emit('delete', props.task.id);
+	emit('close');
+}
+
 function onEscape(event) {
 	if (event.key === 'Escape') emit('close');
 }
@@ -47,13 +60,7 @@ onUnmounted(() => document.removeEventListener('keydown', onEscape));
 <template>
 	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm" @click.self="emit('close')">
 		<div class="flex max-h-[90vh] w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-border bg-card-bg shadow-modal">
-			<div class="flex shrink-0 items-center justify-end px-6 pt-5">
-				<button class="grid size-7 place-items-center rounded-lg text-muted transition hover:bg-column-bg hover:text-ink" aria-label="Close" @click="emit('close')">
-					<X :size="16" />
-				</button>
-			</div>
-
-			<div class="shrink-0 px-6 pb-4 border-b border-border">
+			<div class="shrink-0 px-6 py-4 border-b border-border">
 				<h3 class="text-lg font-bold text-primary leading-snug">
 					{{ task.title }}
 				</h3>
@@ -86,6 +93,23 @@ onUnmounted(() => document.removeEventListener('keydown', onEscape));
 
 				<p v-else class="text-sm text-muted/40 italic">No description provided.</p>
 			</div>
+
+			<div class="flex shrink-0 gap-2 border-t border-border px-6 py-4">
+				<button class="btn btn-secondary btn-md flex-1 rounded-xl" @click="emit('close')">Close</button>
+
+				<button class="btn btn-primary btn-md flex-1 rounded-xl" @click="onEdit">
+					<Pencil :size="14" />
+					Edit
+				</button>
+
+				<button class="btn btn-danger btn-md rounded-xl px-3" @click="showConfirm = true">
+					<Trash2 :size="14" />
+				</button>
+			</div>
 		</div>
+
+		<Teleport to="body">
+			<ConfirmDialog v-if="showConfirm" message="Are you sure you want to delete this task?" confirm-label="Delete" @confirm="onDelete" @cancel="showConfirm = false" />
+		</Teleport>
 	</div>
 </template>
