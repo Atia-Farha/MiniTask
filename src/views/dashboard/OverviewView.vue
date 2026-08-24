@@ -7,72 +7,31 @@ import { useTaskStore } from '@/stores/taskStore';
 const store = useTaskStore();
 
 const stats = computed(() => [
-	{
-		label: 'Total Tasks',
-		value: store.total,
-		icon: Layers,
-		accent: 'bg-primary',
-	},
-	{
-		label: 'Completed',
-		value: store.doneCount,
-		icon: CheckCircle2,
-		accent: 'bg-success',
-	},
-	{
-		label: 'In Progress',
-		value: store.inProgressCount,
-		icon: Clock,
-		accent: 'bg-info',
-	},
-	{
-		label: 'High Priority',
-		value: store.highCount,
-		icon: AlertTriangle,
-		accent: 'bg-danger',
-	},
+	{ label: 'Total Tasks', value: store.total, icon: Layers, accent: 'bg-primary' },
+	{ label: 'Completed', value: store.doneCount, icon: CheckCircle2, accent: 'bg-success' },
+	{ label: 'In Progress', value: store.inProgressCount, icon: Clock, accent: 'bg-info' },
+	{ label: 'High Priority', value: store.highCount, icon: AlertTriangle, accent: 'bg-danger' },
 ]);
 
-const progressOptions = computed(() => ({
+const progressOptions = {
 	chart: { type: 'radialBar' },
-	plotOptions: {
-		radialBar: {
-			hollow: { size: '60%' },
-		},
-	},
+	plotOptions: { radialBar: { hollow: { size: '60%' } } },
 	stroke: { lineCap: 'round' },
 	colors: ['#e24790'],
 	labels: ['Completed'],
-}));
+};
 
 const progressSeries = computed(() => [store.progress]);
 
-const priorityOptions = computed(() => ({
+const priorityOptions = {
 	chart: { type: 'bar', stacked: true, toolbar: { show: false } },
-	plotOptions: {
-		bar: {
-			horizontal: true,
-			borderRadius: 6,
-		},
-	},
-	yaxis: {
-		labels: {
-			show: true,
-			style: { fontSize: '13px', fontWeight: 600, colors: ['#2b1b27'] },
-		},
-	},
-	xaxis: {
-		categories: ['High', 'Medium', 'Low'],
-		labels: {
-			show: false,
-		},
-		axisBorder: { show: false },
-		axisTicks: { show: false },
-	},
+	plotOptions: { bar: { horizontal: true, borderRadius: 6 } },
+	yaxis: { labels: { show: true, style: { fontSize: '13px', fontWeight: 600, colors: ['#2b1b27'] } } },
+	xaxis: { categories: ['High', 'Medium', 'Low'], labels: { show: false }, axisBorder: { show: false }, axisTicks: { show: false } },
 	grid: { show: false },
 	legend: { show: false },
 	tooltip: { enabled: false },
-}));
+};
 
 const prioritySeries = computed(() => [
 	{ name: 'High', data: [store.highCount, 0, 0], color: '#dc3545' },
@@ -80,29 +39,17 @@ const prioritySeries = computed(() => [
 	{ name: 'Low', data: [0, 0, store.lowCount], color: '#1f8a70' },
 ]);
 
-const statusOptions = computed(() => ({
-	chart: {
-		type: 'donut',
-	},
+const statusOptions = {
+	chart: { type: 'donut' },
 	labels: ['To Do', 'In Progress', 'Done'],
 	colors: ['#735f6d', '#e24790', '#1f8a70'],
-	plotOptions: {
-		pie: {
-			borderRadius: 6,
-			spacing: 4,
-			donut: {
-				size: '68%',
-			},
-		},
-	},
-	stroke: {
-		width: 0,
-	},
+	plotOptions: { pie: { borderRadius: 6, spacing: 4, donut: { size: '68%' } } },
+	stroke: { width: 0 },
 	dataLabels: {
 		enabled: true,
 		formatter: (val, opts) => opts.w.config.series[opts.seriesIndex],
 	},
-}));
+};
 
 const statusSeries = computed(() => [store.todoCount, store.inProgressCount, store.doneCount]);
 
@@ -111,6 +58,7 @@ const statusBadge = {
 	'in-progress': 'bg-info/10 text-info',
 	done: 'bg-success/10 text-success',
 };
+
 const statusLabel = {
 	todo: 'To Do',
 	'in-progress': 'In Progress',
@@ -120,14 +68,12 @@ const statusLabel = {
 
 <template>
 	<div class="space-y-6">
-		<!-- Page header -->
 		<div>
 			<h1 class="text-lg font-bold text-ink">Overview</h1>
 
 			<p class="mt-0.5 text-sm text-muted">Your task dashboard at a glance.</p>
 		</div>
 
-		<!-- Stats cards -->
 		<div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
 			<div v-for="stat in stats" :key="stat.label" class="group relative overflow-hidden rounded-xl border border-border bg-card-bg p-4 shadow-card transition hover:shadow-card-hover">
 				<div class="absolute left-0 top-0 h-full w-0.5 rounded-r" :class="stat.accent"></div>
@@ -144,9 +90,7 @@ const statusLabel = {
 			</div>
 		</div>
 
-		<!-- Charts row -->
 		<div class="grid gap-3 lg:grid-cols-3">
-			<!-- Progress radial -->
 			<div class="rounded-xl border border-border bg-card-bg p-5 shadow-card">
 				<div class="flex items-center justify-between">
 					<h2 class="text-xs font-semibold uppercase tracking-wider text-muted">Task Progress</h2>
@@ -159,7 +103,6 @@ const statusLabel = {
 				</div>
 			</div>
 
-			<!-- Priority breakdown -->
 			<div class="rounded-xl border border-border bg-card-bg p-5 shadow-card">
 				<h2 class="text-xs font-semibold uppercase tracking-wider text-muted">Priority</h2>
 
@@ -168,7 +111,6 @@ const statusLabel = {
 				</div>
 			</div>
 
-			<!-- Status breakdown -->
 			<div class="rounded-xl border border-border bg-card-bg p-5 shadow-card">
 				<h2 class="text-xs font-semibold uppercase tracking-wider text-muted">Status</h2>
 
@@ -178,7 +120,6 @@ const statusLabel = {
 			</div>
 		</div>
 
-		<!-- Recent tasks -->
 		<div class="rounded-xl border border-border bg-card-bg p-5 shadow-card">
 			<div class="flex items-center justify-between">
 				<h2 class="text-xs font-semibold uppercase tracking-wider text-muted">Recent Tasks</h2>

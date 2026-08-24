@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import { X } from '@lucide/vue';
 
 const props = defineProps({
@@ -8,23 +8,10 @@ const props = defineProps({
 
 const emit = defineEmits(['submit', 'cancel']);
 
-const title = ref('');
-const desc = ref('');
-const priority = ref('medium');
+const title = ref(props.editTask?.title ?? '');
+const desc = ref(props.editTask?.description ?? '');
+const priority = ref(props.editTask?.priority ?? 'medium');
 const error = ref('');
-
-watch(
-	() => props.editTask,
-	(task) => {
-		if (task) {
-			title.value = task.title;
-			desc.value = task.description;
-			priority.value = task.priority;
-			error.value = '';
-		}
-	},
-	{ immediate: true },
-);
 
 function submit() {
 	error.value = '';
