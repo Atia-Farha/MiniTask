@@ -3,7 +3,7 @@
 
   <p>A responsive personal task manager where users can create tasks, organize them by status, track progress, and find work quickly through search and priority filtering.</p>
 
-  <a href="https://mini-task.pages.dev">
+  <a href="https://mini-task.pages.dev" target="_blank">
     <img src="https://img.shields.io/badge/Visit_Live_Site_%E2%9E%A4-e24790?style=for-the-badge"/>
   </a>
 </div>

@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { ChevronDown, FileText, Pencil, Trash2 } from '@lucide/vue';
 import ConfirmDialog from '@/components/ui/ConfirmDialog.vue';
+import { PRIORITY_CONFIG, STATUS_OPTIONS } from '@/utils/taskConfig';
 
 const props = defineProps({
 	task: { type: Object, required: true },
@@ -10,30 +11,6 @@ const props = defineProps({
 const emit = defineEmits(['close', 'status-change', 'edit', 'delete']);
 
 const showConfirm = ref(false);
-
-const statusOptions = [
-	{ value: 'todo', label: 'To Do' },
-	{ value: 'in-progress', label: 'In Progress' },
-	{ value: 'done', label: 'Done' },
-];
-
-const priorityConfig = {
-	low: {
-		label: 'Low',
-		dot: 'bg-success',
-		badge: 'bg-success/10 text-success border-success/20',
-	},
-	medium: {
-		label: 'Medium',
-		dot: 'bg-warning',
-		badge: 'bg-warning/10 text-warning border-warning/20',
-	},
-	high: {
-		label: 'High',
-		dot: 'bg-danger',
-		badge: 'bg-danger/10 text-danger border-danger/20',
-	},
-};
 
 function onStatusChange(event) {
 	emit('status-change', props.task.id, event.target.value);
@@ -60,13 +37,13 @@ function onDelete() {
 
 				<div class="mt-3 flex flex-wrap items-center gap-2">
 					<div class="flex items-center gap-1.5 rounded-lg bg-column-bg px-3 py-1.5">
-						<span class="size-2 rounded-full" :class="priorityConfig[task.priority].dot"></span>
-						<span class="text-xs font-semibold text-ink">{{ priorityConfig[task.priority].label }} Priority</span>
+						<span class="size-2 rounded-full" :class="PRIORITY_CONFIG[task.priority].dot"></span>
+						<span class="text-xs font-semibold text-ink">{{ PRIORITY_CONFIG[task.priority].label }} Priority</span>
 					</div>
 
 					<div class="relative">
 						<select :value="task.status" class="appearance-none rounded-lg border border-border bg-column-bg py-1.5 pl-3 pr-7 text-xs font-semibold text-ink outline-none transition hover:border-primary/30 focus:border-primary focus:ring-1 focus:ring-primary/10" @change="onStatusChange">
-							<option v-for="opt in statusOptions" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
+							<option v-for="opt in STATUS_OPTIONS" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
 						</select>
 
 						<ChevronDown class="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-muted/50" :size="12" />

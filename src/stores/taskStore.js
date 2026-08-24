@@ -11,43 +11,31 @@ export const useTaskStore = defineStore('tasks', () => {
 	const selectedPriority = ref('all');
 	const showForm = ref(false);
 
-	function persist() {
-		saveTasks(tasks.value);
-	}
-
 	const total = computed(() => tasks.value.length);
-	const doneCount = computed(() => tasks.value.filter((task) => task.status === 'done').length);
+	const doneCount = computed(() => tasks.value.filter((t) => t.status === 'done').length);
 	const progress = computed(() => (total.value ? Math.round((doneCount.value / total.value) * 100) : 0));
 
 	const filteredTasks = computed(() => {
 		let result = tasks.value;
 		if (searchQuery.value.trim()) {
 			const query = searchQuery.value.trim().toLowerCase();
-			result = result.filter((task) => task.title.toLowerCase().includes(query));
+			result = result.filter((t) => t.title.toLowerCase().includes(query));
 		}
 		if (selectedPriority.value !== 'all') {
-			result = result.filter((task) => task.priority === selectedPriority.value);
+			result = result.filter((t) => t.priority === selectedPriority.value);
 		}
 		return result;
 	});
 
-	const todoTasks = computed(() => filteredTasks.value.filter((task) => task.status === 'todo'));
-	const inProgressTasks = computed(() => filteredTasks.value.filter((task) => task.status === 'in-progress'));
-	const doneTasks = computed(() => filteredTasks.value.filter((task) => task.status === 'done'));
+	const todoTasks = computed(() => filteredTasks.value.filter((t) => t.status === 'todo'));
+	const inProgressTasks = computed(() => filteredTasks.value.filter((t) => t.status === 'in-progress'));
+	const doneTasks = computed(() => filteredTasks.value.filter((t) => t.status === 'done'));
 
-	const counts = computed(() =>
-		tasks.value.reduce((acc, task) => {
-			acc[task.status] = (acc[task.status] || 0) + 1;
-			acc[task.priority] = (acc[task.priority] || 0) + 1;
-			return acc;
-		}, {}),
-	);
-
-	const todoCount = computed(() => counts.value.todo || 0);
-	const inProgressCount = computed(() => counts.value['in-progress'] || 0);
-	const highCount = computed(() => counts.value.high || 0);
-	const mediumCount = computed(() => counts.value.medium || 0);
-	const lowCount = computed(() => counts.value.low || 0);
+	const todoCount = computed(() => tasks.value.filter((t) => t.status === 'todo').length);
+	const inProgressCount = computed(() => tasks.value.filter((t) => t.status === 'in-progress').length);
+	const highCount = computed(() => tasks.value.filter((t) => t.priority === 'high').length);
+	const mediumCount = computed(() => tasks.value.filter((t) => t.priority === 'medium').length);
+	const lowCount = computed(() => tasks.value.filter((t) => t.priority === 'low').length);
 
 	function addTask({ title, description, priority }) {
 		const error = validateTitle(title);
@@ -58,12 +46,12 @@ export const useTaskStore = defineStore('tasks', () => {
 			id: crypto.randomUUID(),
 			...normalizeTask({ title, description, priority, status: 'todo' }),
 		});
-		persist();
+		saveTasks(tasks.value);
 		return { error: null };
 	}
 
 	function updateTask(id, updates) {
-		const index = tasks.value.findIndex((task) => task.id === id);
+		const index = tasks.value.findIndex((t) => t.id === id);
 		if (index === -1) return { error: 'This task no longer exists.' };
 		if (updates.title !== undefined) {
 			const error = validateTitle(updates.title);
@@ -83,13 +71,13 @@ export const useTaskStore = defineStore('tasks', () => {
 				status: updates.status ?? existing.status,
 			}),
 		};
-		persist();
+		saveTasks(tasks.value);
 		return { error: null };
 	}
 
 	function removeTask(id) {
-		tasks.value = tasks.value.filter((task) => task.id !== id);
-		persist();
+		tasks.value = tasks.value.filter((t) => t.id !== id);
+		saveTasks(tasks.value);
 	}
 
 	function changeStatus(id, status) {

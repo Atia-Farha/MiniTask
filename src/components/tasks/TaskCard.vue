@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { ChevronDown } from '@lucide/vue';
 import TaskDetail from '@/components/tasks/TaskDetail.vue';
+import { PRIORITY_CONFIG, STATUS_OPTIONS } from '@/utils/taskConfig';
 
 const props = defineProps({
 	task: { type: Object, required: true },
@@ -10,39 +11,6 @@ const props = defineProps({
 const emit = defineEmits(['edit', 'delete', 'status-change']);
 
 const showDetail = ref(false);
-
-const statusOptions = [
-	{
-		value: 'todo',
-		label: 'To Do',
-	},
-	{
-		value: 'in-progress',
-		label: 'In Progress',
-	},
-	{
-		value: 'done',
-		label: 'Done',
-	},
-];
-
-const priorityConfig = {
-	low: {
-		label: 'Low',
-		dot: 'bg-success',
-		badge: 'bg-success/10 text-success border-success/20',
-	},
-	medium: {
-		label: 'Medium',
-		dot: 'bg-warning',
-		badge: 'bg-warning/10 text-warning border-warning/20',
-	},
-	high: {
-		label: 'High',
-		dot: 'bg-danger',
-		badge: 'bg-danger/10 text-danger border-danger/20',
-	},
-};
 
 function onStatusChange(event) {
 	emit('status-change', props.task.id, event.target.value);
@@ -55,7 +23,7 @@ function onDetailStatusChange(id, status) {
 
 <template>
 	<article class="group relative rounded-xl border border-border bg-card-bg p-4 shadow-card transition hover:shadow-card-hover" :class="{ 'opacity-60': task.status === 'done' }">
-		<div class="absolute left-0 top-4 h-8 w-1 rounded-r-full" :class="priorityConfig[task.priority].dot"></div>
+		<div class="absolute left-0 top-4 h-8 w-1 rounded-r-full" :class="PRIORITY_CONFIG[task.priority].dot"></div>
 
 		<div class="flex items-start justify-between gap-3">
 			<div class="min-w-0 flex-1 pl-2 cursor-pointer" @click="showDetail = true">
@@ -70,9 +38,9 @@ function onDetailStatusChange(id, status) {
 				</p>
 
 				<div class="mt-3 flex flex-wrap items-center gap-2">
-					<span class="inline-flex items-center gap-1 rounded-md border px-1.5 py-0.5 text-[11px] font-semibold" :class="priorityConfig[task.priority].badge">
-						<span class="size-1.5 rounded-full" :class="priorityConfig[task.priority].dot"></span>
-						{{ priorityConfig[task.priority].label }}
+					<span class="inline-flex items-center gap-1 rounded-md border px-1.5 py-0.5 text-[11px] font-semibold" :class="PRIORITY_CONFIG[task.priority].badge">
+						<span class="size-1.5 rounded-full" :class="PRIORITY_CONFIG[task.priority].dot"></span>
+						{{ PRIORITY_CONFIG[task.priority].label }}
 					</span>
 				</div>
 			</div>
@@ -81,7 +49,7 @@ function onDetailStatusChange(id, status) {
 		<div class="mt-3 flex items-center gap-2 border-t border-border-light pt-2.5">
 			<div class="relative">
 				<select :value="task.status" class="appearance-none rounded-lg border border-border bg-column-bg py-1 pl-2 pr-6 text-[11px] font-medium text-muted outline-none transition hover:border-primary/30 focus:border-primary focus:ring-1 focus:ring-primary/10" @change="onStatusChange">
-					<option v-for="opt in statusOptions" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
+					<option v-for="opt in STATUS_OPTIONS" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
 				</select>
 
 				<ChevronDown class="pointer-events-none absolute right-1.5 top-1/2 -translate-y-1/2 text-muted/50" :size="12" />
