@@ -1,5 +1,4 @@
 <script setup>
-import { onMounted, onUnmounted } from 'vue';
 import { AlertTriangle } from '@lucide/vue';
 
 defineProps({
@@ -8,13 +7,6 @@ defineProps({
 });
 
 const emit = defineEmits(['confirm', 'cancel']);
-
-function onEscape(event) {
-	if (event.key === 'Escape') emit('cancel');
-}
-
-onMounted(() => document.addEventListener('keydown', onEscape));
-onUnmounted(() => document.removeEventListener('keydown', onEscape));
 </script>
 
 <template>

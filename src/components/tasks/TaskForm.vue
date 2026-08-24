@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onMounted, onUnmounted } from 'vue';
+import { ref, watch } from 'vue';
 import { X } from '@lucide/vue';
 
 const props = defineProps({
@@ -48,13 +48,6 @@ function cancel() {
 	error.value = '';
 	emit('cancel');
 }
-
-function onEscape(event) {
-	if (event.key === 'Escape') cancel();
-}
-
-onMounted(() => document.addEventListener('keydown', onEscape));
-onUnmounted(() => document.removeEventListener('keydown', onEscape));
 </script>
 
 <template>

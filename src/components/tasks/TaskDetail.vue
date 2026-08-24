@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref } from 'vue';
 import { ChevronDown, FileText, Pencil, Trash2 } from '@lucide/vue';
 import ConfirmDialog from '@/components/ui/ConfirmDialog.vue';
 
@@ -48,13 +48,6 @@ function onDelete() {
 	emit('delete', props.task.id);
 	emit('close');
 }
-
-function onEscape(event) {
-	if (event.key === 'Escape') emit('close');
-}
-
-onMounted(() => document.addEventListener('keydown', onEscape));
-onUnmounted(() => document.removeEventListener('keydown', onEscape));
 </script>
 
 <template>

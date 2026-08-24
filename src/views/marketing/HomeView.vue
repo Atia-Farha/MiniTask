@@ -5,7 +5,7 @@ import { ArrowRight, Check, ListChecks, Sparkles, TrendingUp } from '@lucide/vue
 <template>
 	<!-- Navbar -->
 
-	<header class="fixed container z-20 px-5 pt-5 sm:px-8 lg:px-12">
+	<header class="fixed container z-20 px-3 py-3 sm:px-8 lg:px-12">
 		<nav class="flex items-center justify-between rounded-2xl border border-primary/10 bg-surface/85 px-4 py-3 shadow-soft backdrop-blur sm:px-5">
 			<RouterLink to="/" class="flex items-center gap-2.5 font-semibold tracking-tight">
 				<span class="grid size-9 place-items-center rounded-xl bg-primary text-lg font-black text-white shadow-md shadow-primary/25">M</span>
@@ -28,7 +28,7 @@ import { ArrowRight, Check, ListChecks, Sparkles, TrendingUp } from '@lucide/vue
 	<main>
 		<!-- Hero Section -->
 
-		<section class="container relative px-5 pb-24 pt-36 sm:px-8 sm:pt-40 lg:px-12 lg:pb-32">
+		<section class="container relative px-5 pb-24 pt-34 sm:px-8 sm:pt-38 lg:px-12 lg:pb-32">
 			<div class="grid items-center gap-14 lg:grid-cols-[0.95fr_1.05fr] lg:gap-10">
 				<div class="max-w-xl text-center sm:text-left">
 					<p class="mb-5 inline-flex items-center gap-2 rounded-full border border-primary/15 bg-surface px-3 py-1.5 text-sm font-semibold text-primary">
@@ -60,7 +60,7 @@ import { ArrowRight, Check, ListChecks, Sparkles, TrendingUp } from '@lucide/vue
 				</div>
 
 				<!-- Mockup -->
-				<div class="relative mx-auto w-full select-none overflow-hidden lg:mr-0">
+				<div class="relative mx-auto w-full select-none overflow-hidden sm:overflow-visible">
 					<div class="rounded-[1.65rem] border border-white/75 bg-surface p-3 sm:p-4 shadow">
 						<div class="overflow-hidden rounded-2xl border border-primary/10 bg-board-bg">
 							<div class="flex items-center gap-2 border-b border-primary/10 bg-surface px-4 py-3">
@@ -313,13 +313,8 @@ import { ArrowRight, Check, ListChecks, Sparkles, TrendingUp } from '@lucide/vue
 	<!-- Footer Section -->
 
 	<footer class="border-t border-primary/10 px-5 py-8 sm:px-8 lg:px-12">
-		<div class="container flex flex-col items-center justify-between gap-6 text-sm text-muted md:flex-row text-center">
-			<p class="font-medium">
-				<RouterLink to="/" class="text-primary hover:text-hover">MiniTask</RouterLink>&nbsp;
-				<span class="font-normal text-muted">— make space for meaningful work.</span>
-			</p>
-
-			<p>© 2026 MiniTask — Developed by <a href="https://atia-farha.netlify.app" class="hover:text-primary" target="_blank">Atia Farha</a></p>
+		<div class="container text-sm text-muted text-center">
+			<p>© 2026 <RouterLink to="/" class="text-primary hover:text-hover">MiniTask</RouterLink> — Developed by <a href="https://atia-farha.netlify.app" class="hover:text-primary" target="_blank">Atia Farha</a></p>
 		</div>
 	</footer>
 </template>
