@@ -63,7 +63,7 @@ onUnmounted(() => document.removeEventListener('keydown', onEscape));
 			<div class="flex items-center justify-between px-6 pt-5 pb-0">
 				<h2 class="text-md font-bold text-primary">{{ editTask ? 'Edit Task' : 'New Task' }}</h2>
 
-				<button class="grid size-7 place-items-center rounded-lg text-muted transition hover:bg-column-bg hover:text-ink" aria-label="Close" @click="cancel">
+				<button class="grid size-7 place-items-center rounded-lg text-muted transition hover:bg-column-bg hover:text-ink" @click="cancel">
 					<X :size="16" />
 				</button>
 			</div>
@@ -112,7 +112,7 @@ onUnmounted(() => document.removeEventListener('keydown', onEscape));
 					</div>
 				</div>
 
-				<p v-if="error" class="mt-3 flex items-center gap-1.5 rounded-lg bg-danger/5 px-3 py-2 text-xs text-danger" role="alert">
+				<p v-if="error" class="mt-3 flex items-center gap-1.5 rounded-lg bg-danger/5 px-3 py-2 text-xs text-danger">
 					<span class="size-1 shrink-0 rounded-full bg-danger"></span>
 					{{ error }}
 				</p>

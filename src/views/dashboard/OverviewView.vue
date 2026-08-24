@@ -138,7 +138,7 @@ const statusLabel = {
 						<svg class="size-32 -rotate-90" viewBox="0 0 100 100">
 							<circle cx="50" cy="50" r="45" fill="none" stroke-width="7" class="stroke-border-light" />
 
-							<circle cx="50" cy="50" r="45" fill="none" stroke-width="7" stroke-linecap="round" class="stroke-primary transition-all duration-500" 						:stroke-dasharray="circumference" :stroke-dashoffset="dashOffset" />
+							<circle cx="50" cy="50" r="45" fill="none" stroke-width="7" stroke-linecap="round" class="stroke-primary transition-all duration-500" :stroke-dasharray="circumference" :stroke-dashoffset="dashOffset" />
 						</svg>
 
 						<div class="absolute inset-0 grid place-items-center">
@@ -206,13 +206,13 @@ const statusLabel = {
 				</RouterLink>
 			</div>
 
-		<div v-if="store.tasks.length > 0" class="mt-4 divide-y divide-border-light">
-			<div v-for="task in store.tasks.slice(0, 5)" :key="task.id" class="flex items-center gap-3 rounded-lg px-2 py-2.5 transition hover:bg-column-bg/50 -mx-2 first:mt-0 last:mb-0">
-				<div class="min-w-0 flex-1">
-					<p class="truncate text-sm font-medium text-ink">{{ task.title }}</p>
-				</div>
+			<div v-if="store.tasks.length > 0" class="mt-4 divide-y divide-border-light">
+				<div v-for="task in store.tasks.slice(0, 5)" :key="task.id" class="flex items-center gap-3 rounded-lg px-2 py-2.5 transition hover:bg-column-bg/50 -mx-2 first:mt-0 last:mb-0">
+					<div class="min-w-0 flex-1">
+						<p class="truncate text-sm font-medium text-ink">{{ task.title }}</p>
+					</div>
 
-				<span class="shrink-0 rounded-md px-2 py-0.5 text-[11px] font-semibold" :class="statusBadge[task.status]">{{ statusLabel[task.status] }}</span>
+					<span class="shrink-0 rounded-md px-2 py-0.5 text-[11px] font-semibold" :class="statusBadge[task.status]">{{ statusLabel[task.status] }}</span>
 				</div>
 			</div>
 

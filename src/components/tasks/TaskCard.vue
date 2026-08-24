@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { Pencil, Trash2, ChevronDown } from '@lucide/vue';
 import ConfirmDialog from '@/components/ui/ConfirmDialog.vue';
+import TaskDetail from '@/components/tasks/TaskDetail.vue';
 
 const props = defineProps({
 	task: { type: Object, required: true },
@@ -10,6 +11,7 @@ const props = defineProps({
 const emit = defineEmits(['edit', 'delete', 'status-change']);
 
 const showConfirm = ref(false);
+const showDetail = ref(false);
 
 const statusOptions = [
 	{
@@ -47,6 +49,10 @@ const priorityConfig = {
 function onStatusChange(event) {
 	emit('status-change', props.task.id, event.target.value);
 }
+
+function onDetailStatusChange(id, status) {
+	emit('status-change', id, status);
+}
 </script>
 
 <template>
@@ -54,14 +60,14 @@ function onStatusChange(event) {
 		<div class="absolute left-0 top-4 h-8 w-1 rounded-r-full" :class="priorityConfig[task.priority].dot"></div>
 
 		<div class="flex items-start justify-between gap-3">
-			<div class="min-w-0 flex-1 pl-2">
+			<div class="min-w-0 flex-1 pl-2 cursor-pointer" @click="showDetail = true">
 				<div class="flex items-center gap-2">
 					<h3 class="text-sm font-semibold text-ink leading-snug" :class="{ 'text-muted line-through decoration-2 decoration-muted/60': task.status === 'done' }">
 						{{ task.title }}
 					</h3>
 				</div>
 
-				<p v-if="task.description" class="mt-1.5 text-[13px] leading-relaxed text-muted/70 line-clamp-2">
+				<p v-if="task.description" class="mt-1.5 text-[13px] leading-relaxed text-muted/70 line-clamp-2 whitespace-pre-wrap">
 					{{ task.description }}
 				</p>
 
@@ -74,11 +80,11 @@ function onStatusChange(event) {
 			</div>
 
 			<div class="flex shrink-0 items-center gap-0.5 opacity-0 transition group-hover:opacity-100">
-				<button class="grid size-7 place-items-center rounded-lg text-muted/40 transition hover:bg-primary/10 hover:text-primary focus-visible:ring-2 focus-visible:ring-primary" aria-label="Edit task" @click="emit('edit', task)">
+				<button class="grid size-7 place-items-center rounded-lg text-muted/40 transition hover:bg-primary/10 hover:text-primary focus-visible:ring-2 focus-visible:ring-primary" @click="emit('edit', task)">
 					<Pencil :size="13" />
 				</button>
 
-				<button class="grid size-7 place-items-center rounded-lg text-muted/40 transition hover:bg-danger/10 hover:text-danger focus-visible:ring-2 focus-visible:ring-red-400" aria-label="Delete task" @click="showConfirm = true">
+				<button class="grid size-7 place-items-center rounded-lg text-muted/40 transition hover:bg-danger/10 hover:text-danger focus-visible:ring-2 focus-visible:ring-red-400" @click="showConfirm = true">
 					<Trash2 :size="13" />
 				</button>
 			</div>
@@ -93,8 +99,15 @@ function onStatusChange(event) {
 				<ChevronDown class="pointer-events-none absolute right-1.5 top-1/2 -translate-y-1/2 text-muted/50" :size="12" />
 			</div>
 		</div>
-
-		<!-- Delete confirmation modal -->
-		<ConfirmDialog v-if="showConfirm" message="Are you sure you want to delete this task?" confirm-label="Delete" @confirm="emit('delete', task.id)" @cancel="showConfirm = false" />
 	</article>
+
+	<!-- Task detail modal -->
+	<Teleport to="body">
+		<TaskDetail v-if="showDetail" :task="task" @close="showDetail = false" @status-change="onDetailStatusChange" />
+	</Teleport>
+
+	<!-- Delete confirmation modal -->
+	<Teleport to="body">
+		<ConfirmDialog v-if="showConfirm" message="Are you sure you want to delete this task?" confirm-label="Delete" @confirm="emit('delete', task.id)" @cancel="showConfirm = false" />
+	</Teleport>
 </template>

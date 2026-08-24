@@ -6,8 +6,8 @@ import { ArrowRight, Check, ListChecks, Sparkles, TrendingUp } from '@lucide/vue
 	<!-- Navbar -->
 
 	<header class="fixed container z-20 px-5 pt-5 sm:px-8 lg:px-12">
-		<nav class="flex items-center justify-between rounded-2xl border border-primary/10 bg-surface/85 px-4 py-3 shadow-soft backdrop-blur sm:px-5" aria-label="Main navigation">
-			<RouterLink to="/" class="flex items-center gap-2.5 font-semibold tracking-tight" aria-label="MiniTask home">
+		<nav class="flex items-center justify-between rounded-2xl border border-primary/10 bg-surface/85 px-4 py-3 shadow-soft backdrop-blur sm:px-5">
+			<RouterLink to="/" class="flex items-center gap-2.5 font-semibold tracking-tight">
 				<span class="grid size-9 place-items-center rounded-xl bg-primary text-lg font-black text-white shadow-md shadow-primary/25">M</span>
 
 				<span>MiniTask</span>

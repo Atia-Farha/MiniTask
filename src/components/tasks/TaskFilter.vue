@@ -16,7 +16,7 @@ const emit = defineEmits(['update:search', 'update:priority']);
 
 			<input :value="searchQuery" type="text" placeholder="Search tasks..." class="w-full rounded-xl border border-border bg-card-bg py-2.5 pl-9 pr-9 text-sm text-ink placeholder-muted/50 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/10" @input="emit('update:search', $event.target.value)" />
 
-			<button v-if="searchQuery" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted/50 transition hover:text-ink" aria-label="Clear search" @click="emit('update:search', '')">
+			<button v-if="searchQuery" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted/50 transition hover:text-ink" @click="emit('update:search', '')">
 				<X :size="15" />
 			</button>
 		</div>

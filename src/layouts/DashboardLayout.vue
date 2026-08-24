@@ -39,7 +39,7 @@ function openNewTask() {
 					<span class="text-sm font-bold text-white">M</span>
 				</div>
 				<span v-if="!collapsed" class="text-sm font-bold tracking-tight text-ink">MiniTask</span>
-				<button class="ml-auto grid size-7 shrink-0 place-items-center rounded-md text-muted transition hover:bg-column-bg hover:text-ink lg:hidden" aria-label="Close sidebar" @click="sidebarOpen = false">
+				<button class="ml-auto grid size-7 shrink-0 place-items-center rounded-md text-muted transition hover:bg-column-bg hover:text-ink lg:hidden" @click="sidebarOpen = false">
 					<X :size="16" />
 				</button>
 			</div>
@@ -69,7 +69,7 @@ function openNewTask() {
 			<!-- Topbar -->
 			<header class="flex h-14 shrink-0 items-center justify-between border-b border-border bg-card-bg px-4 backdrop-blur-sm sm:px-6">
 				<div class="flex items-center gap-3">
-					<button class="grid size-8 place-items-center rounded-lg text-muted transition hover:bg-column-bg hover:text-ink lg:hidden" aria-label="Open sidebar" @click="sidebarOpen = true">
+					<button class="grid size-8 place-items-center rounded-lg text-muted transition hover:bg-column-bg hover:text-ink lg:hidden" @click="sidebarOpen = true">
 						<Menu :size="20" />
 					</button>
 					<div>
