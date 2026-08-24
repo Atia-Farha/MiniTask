@@ -107,6 +107,7 @@ MiniTask/
     │   └── taskStore.js                # Pinia store for all task state
     ├── utils/
     │   ├── storage.js                  # localStorage read/write helpers
+    │   ├── taskConfig.js               # Priority and status shared options
     │   └── validation.js               # Input validation and normalization
     └── views/
         ├── marketing/
@@ -176,7 +177,7 @@ Three routes are defined:
 
 **DashboardLayout** is a full-screen flex container with three sections:
 
-1. **Sidebar** (`<aside>`) -- Fixed off-canvas on mobile, static on `lg:` breakpoint. Collapsible to 60px on desktop. Contains the app logo, navigation links, and collapse toggle. Sidebar collapse state is persisted to `localStorage` under the key `minitask.sidebar.collapsed`.
+1. **Sidebar** (`<aside>`) -- Fixed off-canvas drawer on mobile, static full-width sidebar on `lg:` breakpoint. Contains the app logo and navigation links.
 
 2. **Topbar** (`<header>`) -- Fixed height bar with a hamburger menu (mobile), page title, and "New Task" button.
 
@@ -308,7 +309,7 @@ flowchart LR
 - Description textarea with 1000-character counter
 - Priority selector: three-button toggle group (Low / Medium / High)
 - Inline validation error display
-- Watches `editTask` prop to populate fields in edit mode
+- Initializes field state directly from `editTask` prop
 - Closes on Escape or backdrop click
 
 **EmptyState** (`src/components/tasks/EmptyState.vue`)
@@ -349,10 +350,9 @@ Every task follows this shape:
 
 ## Persistence
 
-| Key                          | Content                        | Managed By                                 |
-| ---------------------------- | ------------------------------ | ------------------------------------------ |
-| `minitask.tasks`             | JSON array of task objects     | `src/utils/storage.js` via the Pinia store |
-| `minitask.sidebar.collapsed` | Boolean sidebar collapse state | `DashboardLayout.vue` directly             |
+| Key              | Content                    | Managed By                                 |
+| ---------------- | -------------------------- | ------------------------------------------ |
+| `minitask.tasks` | JSON array of task objects | `src/utils/storage.js` via the Pinia store |
 
 **Loading behavior:**
 
