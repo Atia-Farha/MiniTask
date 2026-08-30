@@ -41,6 +41,7 @@
 
 - **Task CRUD** -- Create, read, update, and delete tasks with title, description, and priority.
 - **Kanban Board** -- Three-column layout: To Do, In Progress, Done.
+- **Drag-and-Drop Sorting** -- Reorder tasks within Kanban columns using SortableJS with persistent storage.
 - **Status Management** -- Change task status via inline dropdown or detail modal.
 - **localStorage Persistence** -- Tasks survive page refreshes without a backend.
 - **Search** -- Real-time case-insensitive title search with clear button.
@@ -53,18 +54,19 @@
 
 ## Tech Stack
 
-| Category         | Technology                                                                  |
-| ---------------- | --------------------------------------------------------------------------- |
-| Framework        | [Vue.js 3](https://vuejs.org/)                                              |
-| Routing          | [Vue Router 5](https://router.vuejs.org/)                                   |
-| State Management | [Pinia 4](https://pinia.vuejs.org/)                                         |
-| Styling          | [Tailwind CSS 4](https://tailwindcss.com/)                                  |
-| Build Tool       | [Vite 8](https://vitejs.dev/)                                               |
-| Icons            | [Lucide](https://lucide.dev/)                                               |
-| Charts           | [ApexCharts](https://apexcharts.com/)                                       |
-| Linting          | [ESLint 10](https://eslint.org/) + [OxLint](https://oxc-project.github.io/) |
-| Formatting       | [Prettier 3](https://prettier.io/)                                          |
-| Package Manager  | [pnpm](https://pnpm.io/)                                                    |
+| Category         | Framework                                            |
+| ---------------- | ---------------------------------------------------- |
+| Framework        | [Vue.js 3](https://vuejs.org/)                       |
+| Routing          | [Vue Router 5](https://router.vuejs.org/)            |
+| State Management | [Pinia 4](https://pinia.vuejs.org/)                  |
+| Styling          | [Tailwind CSS 4](https://tailwindcss.com/)           |
+| Drag & Drop      | [SortableJS](https://sortablejs.github.io/Sortable/) |
+| Charts           | [ApexCharts](https://apexcharts.com/)                |
+| Icons            | [Lucide](https://lucide.dev/)                        |
+| Build Tool       | [Vite 8](https://vitejs.dev/)                        |
+| Linting          | [ESLint 10](https://eslint.org/)                     |
+| Formatting       | [Prettier 3](https://prettier.io/)                   |
+| Package Manager  | [pnpm](https://pnpm.io/)                             |
 
 ## Project Structure
 
@@ -75,7 +77,6 @@ MiniTask/
 ├── pnpm-lock.yaml                      # Lockfile
 ├── vite.config.js                      # Vite build configuration
 ├── eslint.config.js                    # ESLint flat config
-├── .oxlintrc.json                      # OxLint configuration
 ├── .prettierrc.json                    # Prettier configuration
 ├── .editorconfig                       # Editor conventions
 ├── jsconfig.json                       # IDE path aliases
@@ -144,13 +145,13 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ## Available Scripts
 
-| Script         | Command              | Description                                                   |
-| -------------- | -------------------- | ------------------------------------------------------------- |
-| `pnpm dev`     | `vite`               | Start the Vite development server with hot module replacement |
-| `pnpm build`   | `vite build`         | Compile and minify for production (output: `dist/`)           |
-| `pnpm preview` | `vite preview`       | Serve the production build locally for testing                |
-| `pnpm lint`    | `run-s "lint:*"`     | Run OxLint then ESLint with auto-fix (writes files)           |
-| `pnpm format`  | `prettier --write .` | Format all files with Prettier (writes files)                 |
+| Script         | Command                  | Description                                                   |
+| -------------- | ------------------------ | ------------------------------------------------------------- |
+| `pnpm dev`     | `vite`                   | Start the Vite development server with hot module replacement |
+| `pnpm build`   | `vite build`             | Compile and minify for production (output: `dist/`)           |
+| `pnpm preview` | `vite preview`           | Serve the production build locally for testing                |
+| `pnpm lint`    | `eslint . --fix --cache` | Run ESLint with auto-fix (writes files)                       |
+| `pnpm format`  | `prettier --write .`     | Format all files with Prettier (writes files)                 |
 
 > **Note:** `pnpm lint` and `pnpm format` are write commands that modify files in place. For a read-only lint check, run `pnpm exec eslint .` directly. For format verification, run `pnpm exec prettier --check src/`.
 
@@ -213,14 +214,15 @@ All task state lives in a single Pinia store (`src/stores/taskStore.js`).
 
 **Actions:**
 
-| Action                                      | Description                                                        |
-| ------------------------------------------- | ------------------------------------------------------------------ |
-| `addTask({ title, description, priority })` | Validates input, generates a UUID, creates and persists a new task |
-| `updateTask(id, updates)`                   | Validates updated fields, merges changes, and persists             |
-| `removeTask(id)`                            | Removes a task by ID and persists                                  |
-| `changeStatus(id, status)`                  | Convenience wrapper around `updateTask` for status changes         |
-| `setSearch(query)`                          | Updates the search filter                                          |
-| `setPriority(priority)`                     | Updates the priority filter                                        |
+| Action                                      | Description                                                         |
+| ------------------------------------------- | ------------------------------------------------------------------- |
+| `addTask({ title, description, priority })` | Validates input, generates a UUID, creates and persists a new task  |
+| `updateTask(id, updates)`                   | Validates updated fields, merges changes, and persists              |
+| `removeTask(id)`                            | Removes a task by ID and persists                                   |
+| `changeStatus(id, status)`                  | Convenience wrapper around `updateTask` for status changes          |
+| `reorderTasks(status, oldIndex, newIndex)`  | Reorders tasks within a column and persists changes to localStorage |
+| `setSearch(query)`                          | Updates the search filter                                           |
+| `setPriority(priority)`                     | Updates the priority filter                                         |
 
 Every mutation calls `persist()`, which writes the full task array to localStorage.
 
@@ -283,7 +285,9 @@ flowchart LR
 **TaskList** (`src/components/tasks/TaskList.vue`)
 
 - Renders a single Kanban column with header, task count badge, and card list
+- Integrated with SortableJS for drag-and-drop task reordering within the column
 - Props: `tasks`, `title`, `accentColor`, `emptyMessage`, `emptySub`
+- Emits: `edit`, `delete`, `status-change`, `reorder`
 - Shows `EmptyState` when the task list is empty
 
 **TaskCard** (`src/components/tasks/TaskCard.vue`)

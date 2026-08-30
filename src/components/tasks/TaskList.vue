@@ -1,4 +1,6 @@
 <script setup>
+import { ref, onMounted, onUnmounted } from 'vue';
+import Sortable from 'sortablejs';
 import TaskCard from '@/components/tasks/TaskCard.vue';
 import EmptyState from '@/components/tasks/EmptyState.vue';
 
@@ -25,7 +27,23 @@ defineProps({
 	},
 });
 
-const emit = defineEmits(['edit', 'delete', 'status-change']);
+const emit = defineEmits(['edit', 'delete', 'status-change', 'reorder']);
+
+const listRef = ref(null);
+let sortable = null;
+
+onMounted(() => {
+	if (listRef.value) {
+		sortable = new Sortable(listRef.value, {
+			animation: 150,
+			onEnd: ({ oldIndex, newIndex }) => {
+				if (oldIndex !== newIndex) emit('reorder', oldIndex, newIndex);
+			},
+		});
+	}
+});
+
+onUnmounted(() => sortable?.destroy());
 </script>
 
 <template>
@@ -42,7 +60,7 @@ const emit = defineEmits(['edit', 'delete', 'status-change']);
 		</div>
 
 		<!-- Task cards -->
-		<div v-if="tasks.length > 0" class="flex flex-col gap-2">
+		<div v-if="tasks.length > 0" ref="listRef" class="flex flex-col gap-2">
 			<TaskCard v-for="task in tasks" :key="task.id" :task="task" @edit="emit('edit', $event)" @delete="emit('delete', $event)" @status-change="(taskId, newStatus) => emit('status-change', taskId, newStatus)" />
 		</div>
 

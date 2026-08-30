@@ -92,6 +92,16 @@ export const useTaskStore = defineStore('tasks', () => {
 		selectedPriority.value = priority;
 	}
 
+	function reorderTasks(status, oldIndex, newIndex) {
+		const columnTasks = tasks.value.filter((t) => t.status === status);
+		const [moved] = columnTasks.splice(oldIndex, 1);
+		columnTasks.splice(newIndex, 0, moved);
+
+		let idx = 0;
+		tasks.value = tasks.value.map((t) => (t.status === status ? columnTasks[idx++] : t));
+		saveTasks(tasks.value);
+	}
+
 	return {
 		tasks,
 		searchQuery,
@@ -113,6 +123,7 @@ export const useTaskStore = defineStore('tasks', () => {
 		updateTask,
 		removeTask,
 		changeStatus,
+		reorderTasks,
 		setSearch,
 		setPriority,
 	};
