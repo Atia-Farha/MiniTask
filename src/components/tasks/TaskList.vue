@@ -36,8 +36,14 @@ onMounted(() => {
 	if (listRef.value) {
 		sortable = new Sortable(listRef.value, {
 			animation: 150,
-			onEnd: ({ oldIndex, newIndex }) => {
-				if (oldIndex !== newIndex) emit('reorder', oldIndex, newIndex);
+			onEnd: (event) => {
+				const list = event.item?.parentElement ?? listRef.value;
+				if (!list) return;
+
+				const orderedIds = Array.from(list.children, (el) => el.dataset.taskId).filter(Boolean);
+				if (!orderedIds.length) return;
+
+				emit('reorder', orderedIds);
 			},
 		});
 	}

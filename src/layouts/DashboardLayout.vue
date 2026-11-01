@@ -4,16 +4,20 @@ import { useRoute, useRouter } from 'vue-router';
 import { RouterLink } from 'vue-router';
 import { Plus, Menu, X, CheckSquare, BarChart3 } from '@lucide/vue';
 import { useTaskStore } from '@/stores/taskStore';
+import { useStorageNotice } from '@/composables/useStorageNotice';
+import ToastMessage from '@/components/ui/ToastMessage.vue';
 
 const route = useRoute();
 const router = useRouter();
 const store = useTaskStore();
 const sidebarOpen = ref(false);
 
+const { notice, dismiss } = useStorageNotice();
+
 const pageTitle = computed(() => route.meta.title || 'Dashboard');
 
 function openNewTask() {
-	store.showForm = true;
+	store.openForm();
 	if (route.name !== 'tasks') {
 		router.push('/dashboard/tasks');
 	}
@@ -28,11 +32,13 @@ function openNewTask() {
 		<!-- Sidebar -->
 		<aside class="fixed inset-y-0 left-0 z-50 flex w-50 flex-col border-r border-border bg-card-bg transition-all duration-500 ease-out lg:static lg:translate-x-0" :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
 			<div class="flex h-14 shrink-0 items-center gap-2.5 border-b border-border px-4">
-				<div class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary">
-					<span class="text-sm font-bold text-white">M</span>
-				</div>
+				<RouterLink to="/" class="flex items-center gap-2.5 font-semibold tracking-tight">
+					<div class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary">
+						<span class="text-sm font-bold text-white">M</span>
+					</div>
 
-				<span class="text-sm font-bold tracking-tight text-ink">MiniTask</span>
+					<span class="text-sm font-bold tracking-tight text-ink">MiniTask</span>
+				</RouterLink>
 
 				<button class="ml-auto grid size-7 shrink-0 place-items-center rounded-md text-muted transition hover:bg-column-bg hover:text-ink lg:hidden" @click="sidebarOpen = false">
 					<X :size="16" />
@@ -76,5 +82,8 @@ function openNewTask() {
 				<RouterView />
 			</main>
 		</div>
+
+		<!-- Storage notice -->
+		<ToastMessage v-if="notice" :message="notice" @close="dismiss" />
 	</div>
 </template>

@@ -21,3 +21,9 @@ export const STATUS_OPTIONS = [
 	{ value: 'in-progress', label: 'In Progress' },
 	{ value: 'done', label: 'Done' },
 ];
+
+export const PRIORITIES = Object.keys(PRIORITY_CONFIG);
+export const STATUSES = STATUS_OPTIONS.map((option) => option.value);
+
+export const DEFAULT_PRIORITY = 'medium';
+export const DEFAULT_STATUS = 'todo';

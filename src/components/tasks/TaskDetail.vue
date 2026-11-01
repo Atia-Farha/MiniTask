@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { ChevronDown, FileText, Pencil, Trash2 } from '@lucide/vue';
 import ConfirmDialog from '@/components/ui/ConfirmDialog.vue';
 import { PRIORITY_CONFIG, STATUS_OPTIONS } from '@/utils/taskConfig';
+import { useDismissable } from '@/composables/useDismissable';
 
 const props = defineProps({
 	task: { type: Object, required: true },
@@ -11,6 +12,11 @@ const props = defineProps({
 const emit = defineEmits(['close', 'status-change', 'edit', 'delete']);
 
 const showConfirm = ref(false);
+
+useDismissable(
+	() => !showConfirm.value,
+	() => emit('close'),
+);
 
 function onStatusChange(event) {
 	emit('status-change', props.task.id, event.target.value);
@@ -29,11 +35,11 @@ function onDelete() {
 
 <template>
 	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm" @click.self="emit('close')">
-		<div class="flex max-h-[90vh] w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-border bg-card-bg shadow-modal">
+		<div role="dialog" aria-modal="true" aria-labelledby="task-detail-title" class="flex max-h-[90vh] w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-border bg-card-bg shadow-modal">
 			<!-- Title -->
 
 			<div class="shrink-0 px-6 py-4 border-b border-border">
-				<h3 class="text-lg font-bold text-primary leading-snug">
+				<h3 id="task-detail-title" class="text-lg font-bold text-primary leading-snug">
 					{{ task.title }}
 				</h3>
 

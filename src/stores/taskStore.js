@@ -9,7 +9,8 @@ export const useTaskStore = defineStore('tasks', () => {
 	const tasks = ref(stored.length > 0 ? stored : seedTasks);
 	const searchQuery = ref('');
 	const selectedPriority = ref('all');
-	const showForm = ref(false);
+	const editingTask = ref(null);
+	const formOpen = ref(false);
 
 	const total = computed(() => tasks.value.length);
 	const doneCount = computed(() => tasks.value.filter((t) => t.status === 'done').length);
@@ -92,13 +93,35 @@ export const useTaskStore = defineStore('tasks', () => {
 		selectedPriority.value = priority;
 	}
 
-	function reorderTasks(status, oldIndex, newIndex) {
-		const columnTasks = tasks.value.filter((t) => t.status === status);
-		const [moved] = columnTasks.splice(oldIndex, 1);
-		columnTasks.splice(newIndex, 0, moved);
+	function openForm(task = null) {
+		editingTask.value = task;
+		formOpen.value = true;
+	}
 
-		let idx = 0;
-		tasks.value = tasks.value.map((t) => (t.status === status ? columnTasks[idx++] : t));
+	function closeForm() {
+		editingTask.value = null;
+		formOpen.value = false;
+	}
+
+	function reorderTasks(status, orderedIds) {
+		if (!Array.isArray(orderedIds) || !orderedIds.length) return;
+
+		const column = tasks.value.filter((t) => t.status === status);
+		const byId = new Map(column.map((t) => [t.id, t]));
+
+		const reordered = orderedIds.map((id) => byId.get(id)).filter(Boolean);
+		if (!reordered.length) return;
+
+		const movedIds = new Set(reordered.map((t) => t.id));
+
+		const slots = column.map((t) => (movedIds.has(t.id) ? null : t));
+		let cursor = 0;
+		const merged = slots.map((slot) => (slot === null ? reordered[cursor++] : slot));
+
+		tasks.value = tasks.value.map((t) => {
+			if (t.status !== status) return t;
+			return merged.shift();
+		});
 		saveTasks(tasks.value);
 	}
 
@@ -106,7 +129,8 @@ export const useTaskStore = defineStore('tasks', () => {
 		tasks,
 		searchQuery,
 		selectedPriority,
-		showForm,
+		editingTask,
+		formOpen,
 		total,
 		doneCount,
 		progress,
@@ -126,5 +150,7 @@ export const useTaskStore = defineStore('tasks', () => {
 		reorderTasks,
 		setSearch,
 		setPriority,
+		openForm,
+		closeForm,
 	};
 });

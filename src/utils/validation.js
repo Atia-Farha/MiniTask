@@ -1,3 +1,5 @@
+import { DEFAULT_PRIORITY, DEFAULT_STATUS, PRIORITIES, STATUSES } from '@/utils/taskConfig';
+
 export function validateTitle(title) {
 	const trimmed = title?.trim() ?? '';
 
@@ -15,11 +17,25 @@ export function validateDescription(description) {
 	return null;
 }
 
-export function normalizeTask({ title = '', description = '', priority = 'low', status = 'todo' }) {
+export function normalizeTask({ title = '', description = '', priority = DEFAULT_PRIORITY, status = DEFAULT_STATUS } = {}) {
 	return {
 		title: title.trim(),
 		description: description.trim(),
-		priority,
-		status,
+		priority: PRIORITIES.includes(priority) ? priority : DEFAULT_PRIORITY,
+		status: STATUSES.includes(status) ? status : DEFAULT_STATUS,
+	};
+}
+
+export function sanitizeTask(task) {
+	if (!task?.id || !task?.title?.trim()) return null;
+
+	return {
+		id: task.id,
+		...normalizeTask({
+			title: task.title,
+			description: task.description,
+			priority: task.priority,
+			status: task.status,
+		}),
 	};
 }

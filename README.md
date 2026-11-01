@@ -41,15 +41,16 @@
 
 - **Task CRUD** -- Create, read, update, and delete tasks with title, description, and priority.
 - **Kanban Board** -- Three-column layout: To Do, In Progress, Done.
-- **Drag-and-Drop Sorting** -- Reorder tasks within Kanban columns using SortableJS with persistent storage.
+- **Drag-and-Drop Sorting** -- Reorder tasks within Kanban columns using SortableJS with persistent storage. Reordering stays correct while a search or priority filter is active.
 - **Status Management** -- Change task status via inline dropdown or detail modal.
-- **localStorage Persistence** -- Tasks survive page refreshes without a backend.
+- **localStorage Persistence** -- Tasks survive page refreshes without a backend, and stored records are repaired on load so outdated data cannot break the app.
 - **Search** -- Real-time case-insensitive title search with clear button.
 - **Priority Filtering** -- Filter tasks by Low, Medium, or High priority.
 - **Task Detail View** -- Full-screen modal showing complete task information.
 - **Progress Tracking** -- Completion percentage, task counts, and visual charts.
-- **Analytics Dashboard** -- Overview page with radial bar, horizontal bar, and donut charts.
+- **Analytics Dashboard** -- Overview page with radial bar, horizontal bar, and donut charts, code-split so the charting library loads only when needed.
 - **Confirmation Dialogs** -- Destructive actions require explicit confirmation.
+- **Keyboard Dismissal** -- Every modal closes with the Escape key.
 - **Responsive Design** -- Mobile-first layouts that adapt from phones to desktops.
 
 ## Tech Stack
@@ -89,6 +90,10 @@ MiniTask/
     │   └── styles/
     │       └── main.css                # Tailwind v4 imports and design tokens
     ├── components/
+    │   ├── marketing/
+    │   │   ├── BoardMockup.vue         # Static app mockup for the landing hero
+    │   │   ├── FeatureGrid.vue         # Landing-page feature cards
+    │   │   └── HowItWorks.vue          # Landing-page step walkthrough
     │   ├── tasks/
     │   │   ├── TaskCard.vue            # Individual task card with priority accent
     │   │   ├── TaskDetail.vue          # Full task detail modal
@@ -97,7 +102,11 @@ MiniTask/
     │   │   ├── TaskList.vue            # Kanban column wrapper
     │   │   └── EmptyState.vue          # Empty column placeholder
     │   └── ui/
-    │       └── ConfirmDialog.vue       # Destructive action confirmation modal
+    │       ├── ConfirmDialog.vue       # Destructive action confirmation modal
+    │       └── ToastMessage.vue        # Non-blocking notice banner
+    ├── composables/
+    │   ├── useDismissable.js           # Escape-key dismissal for modal layers
+    │   └── useStorageNotice.js         # Persistence failure notices
     ├── data/
     │   └── seed.js                     # Mock seed tasks for first load
     ├── layouts/
@@ -174,6 +183,11 @@ Three routes are defined:
 - The "New Task" button in the topbar opens the task form and navigates to `/dashboard/tasks` if the user is on the Overview page.
 - An `afterEach` hook sets `document.title` to `"<page title> | MiniTask"` on every navigation.
 
+**Code splitting:**
+
+- `OverviewView` and `TasksView` are loaded through dynamic `import()`, so the marketing page does not download the dashboard bundle.
+- The ApexCharts component is loaded with `defineAsyncComponent`, keeping the charting library out of the initial payload for every route that renders no chart.
+
 ### Layouts
 
 **DashboardLayout** is a full-screen flex container with three sections:
@@ -195,7 +209,8 @@ All task state lives in a single Pinia store (`src/stores/taskStore.js`).
 | `tasks`            | `Array`   | Master task collection (loaded from localStorage or seed data)   |
 | `searchQuery`      | `String`  | Current search filter text                                       |
 | `selectedPriority` | `String`  | Current priority filter (`'all'`, `'low'`, `'medium'`, `'high'`) |
-| `showForm`         | `Boolean` | Controls task form modal visibility                              |
+| `editingTask`      | `Object`  | Task being edited, or `null` when the form is not in edit mode   |
+| `formOpen`         | `Boolean` | Controls task form modal visibility                              |
 
 **Computed Getters:**
 
@@ -214,15 +229,19 @@ All task state lives in a single Pinia store (`src/stores/taskStore.js`).
 
 **Actions:**
 
-| Action                                      | Description                                                         |
-| ------------------------------------------- | ------------------------------------------------------------------- |
-| `addTask({ title, description, priority })` | Validates input, generates a UUID, creates and persists a new task  |
-| `updateTask(id, updates)`                   | Validates updated fields, merges changes, and persists              |
-| `removeTask(id)`                            | Removes a task by ID and persists                                   |
-| `changeStatus(id, status)`                  | Convenience wrapper around `updateTask` for status changes          |
-| `reorderTasks(status, oldIndex, newIndex)`  | Reorders tasks within a column and persists changes to localStorage |
-| `setSearch(query)`                          | Updates the search filter                                           |
-| `setPriority(priority)`                     | Updates the priority filter                                         |
+| Action                                      | Description                                                          |
+| ------------------------------------------- | -------------------------------------------------------------------- |
+| `addTask({ title, description, priority })` | Validates input, generates a UUID, creates and persists a new task   |
+| `updateTask(id, updates)`                   | Validates updated fields, merges changes, and persists               |
+| `removeTask(id)`                            | Removes a task by ID and persists                                    |
+| `changeStatus(id, status)`                  | Convenience wrapper around `updateTask` for status changes           |
+| `reorderTasks(status, orderedIds)`          | Applies a new column order given as task IDs and persists the change |
+| `setSearch(query)`                          | Updates the search filter                                            |
+| `setPriority(priority)`                     | Updates the priority filter                                          |
+| `openForm(task)`                            | Opens the task form, in edit mode when a task is passed              |
+| `closeForm()`                               | Closes the task form and clears the editing target                   |
+
+`reorderTasks` receives **task IDs** rather than list indices. The rendered column may be filtered, so a positional index refers to the visible subset while the underlying collection holds every task. Only visible tasks are reordered; tasks hidden by a filter keep their original slots.
 
 Every mutation calls `persist()`, which writes the full task array to localStorage.
 
@@ -288,6 +307,7 @@ flowchart LR
 - Integrated with SortableJS for drag-and-drop task reordering within the column
 - Props: `tasks`, `title`, `accentColor`, `emptyMessage`, `emptySub`
 - Emits: `edit`, `delete`, `status-change`, `reorder`
+- On drop, emits the full column order as an array of task IDs (read from each card's `data-task-id`), so reordering stays correct while a filter is active
 - Shows `EmptyState` when the task list is empty
 
 **TaskCard** (`src/components/tasks/TaskCard.vue`)
@@ -297,6 +317,7 @@ flowchart LR
 - Priority badge with colored dot
 - Inline status `<select>` for quick status changes
 - Dimmed appearance (`opacity-60`) and strikethrough title for completed tasks
+- Forwards `data-task-id` to the root element so the parent list can read the DOM order
 
 **TaskDetail** (`src/components/tasks/TaskDetail.vue`)
 
@@ -305,16 +326,18 @@ flowchart LR
 - Footer with Edit and Delete buttons
 - Closes on Escape key or backdrop click
 - Delete triggers the `ConfirmDialog`
+- Uses `role="dialog"` with `aria-modal="true"`
 
 **TaskForm** (`src/components/tasks/TaskForm.vue`)
 
 - Modal form for creating or editing tasks
 - Title input with 120-character counter and autofocus
 - Description textarea with 1000-character counter
-- Priority selector: three-button toggle group (Low / Medium / High)
+- Priority selector: three-button toggle group (Low / Medium / High), rendered from `PRIORITIES` in `taskConfig.js`
 - Inline validation error display
 - Initializes field state directly from `editTask` prop
 - Closes on Escape or backdrop click
+- Uses `role="dialog"` with `aria-modal="true"`
 
 **EmptyState** (`src/components/tasks/EmptyState.vue`)
 
@@ -329,6 +352,40 @@ flowchart LR
 - Warning icon, message, and "This action cannot be undone." subtext
 - Cancel and Confirm buttons (danger-styled)
 - Closes on Escape or backdrop click
+- Uses `role="alertdialog"` with `aria-modal="true"`
+
+**ToastMessage** (`src/components/ui/ToastMessage.vue`)
+
+- Non-blocking notice rendered in the dashboard layout
+- Used to surface persistence failures without interrupting the user
+- Announced politely via `role="status"` and `aria-live="polite"`
+
+### Marketing Components
+
+**BoardMockup** (`src/components/marketing/BoardMockup.vue`)
+
+- Static app mockup used in the landing-page hero
+- Renders three Kanban columns from a local data array, including floating stat cards
+
+**FeatureGrid** (`src/components/marketing/FeatureGrid.vue`)
+
+- Three-card feature section with icon, heading, and body text
+
+**HowItWorks** (`src/components/marketing/HowItWorks.vue`)
+
+- Three-step walkthrough section with numbered markers
+
+### Composables
+
+**useDismissable** (`src/composables/useDismissable.js`)
+
+- `useDismissable(isOpen, onDismiss)` attaches an Escape-key listener only while the layer is open, and removes it on unmount
+- Shared by `TaskForm`, `TaskDetail`, and `ConfirmDialog` so dismissal behavior stays consistent across every modal
+
+**useStorageNotice** (`src/composables/useStorageNotice.js`)
+
+- Listens for the `minitask:storage-error` window event and exposes the message plus a `dismiss` action
+- Auto-dismisses after a few seconds
 
 ## Data Model
 
@@ -339,7 +396,7 @@ Every task follows this shape:
   id: String,          // crypto.randomUUID() -- client-generated, collision-free
   title: String,       // Required. Trimmed. Max 120 characters.
   description: String, // Optional. Trimmed. Max 1000 characters.
-  priority: String,    // 'low' | 'medium' | 'high' (default: 'low')
+  priority: String,    // 'low' | 'medium' | 'high' (default: 'medium')
   status: String,      // 'todo' | 'in-progress' | 'done' (default: 'todo')
 }
 ```
@@ -351,6 +408,7 @@ Every task follows this shape:
 - Description cannot exceed 1000 characters.
 - Empty description is allowed.
 - All input is trimmed before storage.
+- Unknown `priority` or `status` values are replaced with their defaults rather than stored, so a malformed record can never break a component's lookup.
 
 ## Persistence
 
@@ -363,11 +421,13 @@ Every task follows this shape:
 1. On app startup, `loadTasks()` reads `minitask.tasks` from localStorage.
 2. If the key is missing, empty, or contains invalid JSON, it falls back to the seed data from `src/data/seed.js`.
 3. Each item is validated to have a non-empty `id` and trimmed `title`. Invalid items are silently filtered out.
+4. Every surviving record is passed through `normalizeTask()`, so a task stored under an older data shape (missing `priority` or `status`) is repaired to the current defaults instead of breaking the render.
 
 **Saving behavior:**
 
 - `saveTasks()` is called after every store mutation (add, update, remove).
-- Errors (quota exceeded, security sandbox) are caught and surfaced via `alert()`.
+- Errors (quota exceeded, security sandbox) are caught and dispatched as a `minitask:storage-error` window event.
+- `useStorageNotice()` listens for that event and renders a dismissible toast, keeping the persistence layer free of UI concerns.
 
 ## Styling and Design Tokens
 

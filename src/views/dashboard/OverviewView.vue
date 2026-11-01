@@ -1,8 +1,10 @@
 <script setup>
-import { computed } from 'vue';
+import { computed, defineAsyncComponent } from 'vue';
 import { RouterLink } from 'vue-router';
 import { Layers, CheckCircle2, Clock, AlertTriangle, ArrowRight, BarChart3 } from '@lucide/vue';
 import { useTaskStore } from '@/stores/taskStore';
+
+const ApexChart = defineAsyncComponent(() => import('vue3-apexcharts'));
 
 const store = useTaskStore();
 
@@ -107,7 +109,7 @@ const statusLabel = {
 				</div>
 
 				<div class="h-full w-full flex justify-center items-center">
-					<apexchart type="radialBar" height="220" :options="progressOptions" :series="progressSeries" />
+					<ApexChart type="radialBar" height="220" :options="progressOptions" :series="progressSeries" />
 				</div>
 			</div>
 
@@ -117,7 +119,7 @@ const statusLabel = {
 				<h2 class="text-xs font-semibold uppercase tracking-wider text-muted">Priority</h2>
 
 				<div class="h-full w-full flex justify-center items-center">
-					<apexchart type="bar" :options="priorityOptions" :series="prioritySeries" />
+					<ApexChart type="bar" :options="priorityOptions" :series="prioritySeries" />
 				</div>
 			</div>
 
@@ -127,7 +129,7 @@ const statusLabel = {
 				<h2 class="text-xs font-semibold uppercase tracking-wider text-muted">Status</h2>
 
 				<div class="h-full w-full flex justify-center items-center">
-					<apexchart type="donut" :options="statusOptions" :series="statusSeries" />
+					<ApexChart type="donut" :options="statusOptions" :series="statusSeries" />
 				</div>
 			</div>
 		</div>

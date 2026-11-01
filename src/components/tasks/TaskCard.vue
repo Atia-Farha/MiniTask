@@ -22,7 +22,7 @@ function onDetailStatusChange(id, status) {
 </script>
 
 <template>
-	<article class="group relative rounded-xl border border-border bg-card-bg p-4 shadow-card transition hover:shadow-card-hover cursor-grab active:cursor-grabbing" :class="{ 'opacity-60': task.status === 'done' }">
+	<article :data-task-id="task.id" class="group relative rounded-xl border border-border bg-card-bg p-4 shadow-card transition hover:shadow-card-hover cursor-grab active:cursor-grabbing" :class="{ 'opacity-60': task.status === 'done' }">
 		<div class="absolute left-0 top-4 h-8 w-1 rounded-r-full" :class="PRIORITY_CONFIG[task.priority].dot"></div>
 
 		<div class="flex items-start justify-between gap-3">

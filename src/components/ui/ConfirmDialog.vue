@@ -1,5 +1,6 @@
 <script setup>
 import { AlertTriangle } from '@lucide/vue';
+import { useDismissable } from '@/composables/useDismissable';
 
 defineProps({
 	message: { type: String, default: 'Are you sure?' },
@@ -7,17 +8,22 @@ defineProps({
 });
 
 const emit = defineEmits(['confirm', 'cancel']);
+
+useDismissable(
+	() => true,
+	() => emit('cancel'),
+);
 </script>
 
 <template>
 	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm" @click.self="emit('cancel')">
-		<div class="w-full max-w-sm rounded-2xl border border-border bg-card-bg shadow-modal">
+		<div role="alertdialog" aria-modal="true" aria-labelledby="confirm-dialog-title" class="w-full max-w-sm rounded-2xl border border-border bg-card-bg shadow-modal">
 			<div class="flex flex-col items-center px-6 pt-6 pb-4 text-center">
 				<div class="grid size-12 place-items-center rounded-full bg-danger/10">
 					<AlertTriangle class="text-danger" :size="24" />
 				</div>
 
-				<h2 class="mt-4 text-base font-bold text-ink">{{ message }}</h2>
+				<h2 id="confirm-dialog-title" class="mt-4 text-base font-bold text-ink">{{ message }}</h2>
 
 				<p class="mt-1 text-sm text-muted">This action cannot be undone.</p>
 			</div>

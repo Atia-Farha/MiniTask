@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from 'vue';
 import { X } from '@lucide/vue';
+import { DEFAULT_PRIORITY, PRIORITIES, PRIORITY_CONFIG } from '@/utils/taskConfig';
+import { useDismissable } from '@/composables/useDismissable';
 
 const props = defineProps({
 	editTask: { type: Object, default: null },
@@ -10,8 +12,13 @@ const emit = defineEmits(['submit', 'cancel']);
 
 const title = ref(props.editTask?.title ?? '');
 const desc = ref(props.editTask?.description ?? '');
-const priority = ref(props.editTask?.priority ?? 'medium');
+const priority = ref(props.editTask?.priority ?? DEFAULT_PRIORITY);
 const error = ref('');
+
+useDismissable(
+	() => true,
+	() => cancel(),
+);
 
 function submit() {
 	error.value = '';
@@ -27,7 +34,7 @@ function submit() {
 	if (!props.editTask) {
 		title.value = '';
 		desc.value = '';
-		priority.value = 'medium';
+		priority.value = DEFAULT_PRIORITY;
 	}
 }
 
@@ -39,13 +46,13 @@ function cancel() {
 
 <template>
 	<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm" @click.self="cancel">
-		<div class="w-full max-w-md overflow-hidden rounded-2xl border border-border bg-card-bg shadow-modal">
+		<div role="dialog" aria-modal="true" aria-labelledby="task-form-title" class="w-full max-w-md overflow-hidden rounded-2xl border border-border bg-card-bg shadow-modal">
 			<!-- Header -->
 
 			<div class="flex items-center justify-between px-6 pt-5 pb-0">
-				<h2 class="text-md font-bold text-primary">{{ editTask ? 'Edit Task' : 'New Task' }}</h2>
+				<h2 id="task-form-title" class="text-md font-bold text-primary">{{ editTask ? 'Edit Task' : 'New Task' }}</h2>
 
-				<button class="grid size-7 place-items-center rounded-lg text-muted transition hover:bg-column-bg hover:text-ink" @click="cancel">
+				<button type="button" aria-label="Close" class="grid size-7 place-items-center rounded-lg text-muted transition hover:bg-column-bg hover:text-ink" @click="cancel">
 					<X :size="16" />
 				</button>
 			</div>
@@ -82,19 +89,9 @@ function cancel() {
 						<label class="mb-2 block text-xs font-semibold uppercase tracking-wider text-muted">Priority</label>
 
 						<div class="flex gap-1.5 rounded-xl bg-column-bg p-1">
-							<button
-								v-for="opt in [
-									{ value: 'low', label: 'Low', dot: 'bg-success' },
-									{ value: 'medium', label: 'Medium', dot: 'bg-warning' },
-									{ value: 'high', label: 'High', dot: 'bg-danger' },
-								]"
-								:key="opt.value"
-								type="button"
-								class="flex flex-1 items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium transition"
-								:class="priority === opt.value ? 'bg-card-bg text-ink shadow-sm' : 'text-muted hover:text-ink'"
-								@click="priority = opt.value">
-								<span class="size-1.5 rounded-full" :class="opt.dot"></span>
-								{{ opt.label }}
+							<button v-for="level in PRIORITIES" :key="level" type="button" class="flex flex-1 items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium transition" :class="priority === level ? 'bg-card-bg text-ink shadow-sm' : 'text-muted hover:text-ink'" @click="priority = level">
+								<span class="size-1.5 rounded-full" :class="PRIORITY_CONFIG[level].dot"></span>
+								{{ PRIORITY_CONFIG[level].label }}
 							</button>
 						</div>
 					</div>
@@ -102,7 +99,7 @@ function cancel() {
 
 				<!-- Error -->
 
-				<p v-if="error" class="mt-3 flex items-center gap-1.5 rounded-lg bg-danger/5 px-3 py-2 text-xs text-danger">
+				<p v-if="error" role="alert" class="mt-3 flex items-center gap-1.5 rounded-lg bg-danger/5 px-3 py-2 text-xs text-danger">
 					<span class="size-1 shrink-0 rounded-full bg-danger"></span>
 					{{ error }}
 				</p>
